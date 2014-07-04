@@ -53,6 +53,11 @@ class DomainPurchasesController < ApplicationController
   end
 
   def check_domain
+    session['domain'] = nil
+    session['complete'] = nil
+    session['contact_info'] = nil
+    session['order_item'] = nil
+    session['user_password'] = nil
 
     if params[:domain]
       domain = params[:domain][:name]+"."+params[:domain][:type]
