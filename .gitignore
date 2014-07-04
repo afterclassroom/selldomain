@@ -1,0 +1,14 @@
+*.tmproj
+.tmp*
+nbproject/
+Capfile
+log/*.log
+log/*.log.1
+log/**/*
+tmp/**/*
+
+config/database.yml
+public/assets/**/*
+public/system/**/*
+.bundle/*.log
+
