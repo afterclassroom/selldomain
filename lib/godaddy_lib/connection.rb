@@ -96,7 +96,11 @@ module GoDaddyReseller
                 if a1["Envelope"]["Body"]['PollResponse'].nil?
                   if a1["Envelope"]["Body"]['OrderDomainPrivacyResponse'].nil?
                     if a1["Envelope"]["Body"]['InfoResponse'].nil?
-                      small_xml =  a1["Envelope"]["Body"]['ValidateRegistrationResponse']['ValidateRegistrationResult']
+                      if a1["Envelope"]["Body"]['ValidateRegistrationResponse'].nil?
+                        small_xml =  a1["Envelope"]["Body"]['ModifyDNSResponse']['ModifyDNSResult']
+                      else
+                        small_xml =  a1["Envelope"]["Body"]['ValidateRegistrationResponse']['ValidateRegistrationResult']
+                      end
                     else
                       small_xml =  a1["Envelope"]["Body"]['InfoResponse']['InfoResult']
                     end

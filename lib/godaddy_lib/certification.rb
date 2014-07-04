@@ -62,6 +62,10 @@ module GoDaddyReseller
       wapi_validate_registration(domainContacts, domainDataArray)
     end
 
+    def modify_dns(dnsRequestArray, sDomain)
+      wapi_modify_dns(dnsRequestArray, sDomain)
+    end
+
     # Resets the certification tasks, in case something went wrong during certification
     def reset_certification_run
       response = process_request("<manage><script cmd='reset' /></manage>")
@@ -252,9 +256,9 @@ module GoDaddyReseller
     def domain_name_registration_certification(order_object)
       #NOTE: name_server format : [ { :name => 'ns1.example.com' }, { :name => 'ns2.example.com' } ]
       STDERR.print("2. Domain Name Registration PROCESSING:\n")
-      
+
       domain_value =  order_object[:domain_value]
-      user_hash = order_object[:user_hash] 
+      user_hash = order_object[:user_hash]
       domain_type = order_object[:domain_type]
       product_id = order_object[:product_id]
       order_period = order_object[:order_period]

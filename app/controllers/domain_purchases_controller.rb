@@ -12,7 +12,7 @@ require 'wapi'
 
 class DomainPurchasesController < ApplicationController
   before_filter :prepare, :except => [:confirm_purchase, :get_state, :get_price]
-
+  http_basic_authenticate_with :name => "gotoclassroom", :password => "vietnam2011"
 
   def query_poll
     #DATNT: this action should only called once per day
@@ -199,33 +199,26 @@ class DomainPurchasesController < ApplicationController
   def buy_domain
     if session['complete'] && session['complete']['step2'] == true
 
-      #1.check session data:
-      begin
-        contact = {
-          :fname => session['contact_info']['fname'],
-          :lname => session['contact_info']['lname'],
-          :org => session['contact_info']['org'],
-          :email => session['contact_info']['email'],
-          :sa1 => session['contact_info']['sa1'],
-          :sa2 => session['contact_info']['sa2'],
-          :city => session['contact_info']['city'],
-          :sp => session['contact_info']['sp'],
-          :pc => session['contact_info']['pc'],
-          :cc => session['contact_info']['cc'],
-          :phone => session['contact_info']['phone'],
-          :fax => session['contact_info']['fax']
-        }
+      contact = {
+        :fname => session['contact_info']['fname'],
+        :lname => session['contact_info']['lname'],
+        :org => session['contact_info']['org'],
+        :email => session['contact_info']['email'],
+        :sa1 => session['contact_info']['sa1'],
+        :sa2 => session['contact_info']['sa2'],
+        :city => session['contact_info']['city'],
+        :sp => session['contact_info']['sp'],
+        :pc => session['contact_info']['pc'],
+        :cc => session['contact_info']['cc'],
+        :phone => session['contact_info']['phone'],
+        :fax => session['contact_info']['fax']
+      }
 
-        order = {
-          :productid => session['order_item']['product_id'],
-          :quantity => 1
-        }
+      order = {
+        :productid => session['order_item']['product_id'],
+        :quantity => 1
+      }
 
-      rescue
-        render :text => 'your session has expired.'
-      end
-
-      #2.call api OrderDomain
       api_result = ""
       begin
         user_hash = contact
@@ -256,6 +249,7 @@ class DomainPurchasesController < ApplicationController
           orderid: new_reg[:orderid],
           domain: @overall_domain,
           domain_type: session['domain']['type'],
+          password: session['user_password'],
           contact_info_id: contact_info.id,
           order_item_id: order_item.id
           )
@@ -267,12 +261,52 @@ class DomainPurchasesController < ApplicationController
         }
 
         api_result = new_reg.merge(account)
+
+        # result = update_dns('tiemtoi.com', '206.225.83.194', 'domain.gotoclassroom.com')
+        # puts("=======")
+        # puts(result)
+        # puts("=======")
       rescue => e
         api_result = e
       end
       render :text => api_result
     else
       redirect_to "/"
+    end
+  end
+
+  def update_dns(sDomain, ip, record_value, action = 'set')
+    begin
+      dnsRequest1 = {
+        :action => action,
+        :recType => 'A',
+        :ttl => 432000,
+        :recValue => ip
+      }
+
+      dnsRequest2 = {
+        :action => action,
+        :recType => 'CNAME',
+        :ttl => 432000,
+        :key => 'www',
+        :recValue => record_value
+      }
+
+      dnsRequest3 = {
+        :action => action,
+        :recType => 'MX',
+        :ttl => 432000,
+        :recValue => record_value
+      }
+
+      dnsRequestArray = [
+        [{:DNSRequest => dnsRequest1}],[{:DNSRequest => dnsRequest2}],[{:DNSRequest => dnsRequest3}]
+      ]
+
+      result = @godaddy.modify_dns(dnsRequestArray, sDomain)
+      return result
+    rescue
+      return false
     end
   end
 
@@ -295,7 +329,6 @@ class DomainPurchasesController < ApplicationController
     # godaddy.run_certification # runs the cerfication script, required to open a production reseller account
 
     @godaddy.reset_certification_run
-
     #@overall_domain = "examplejun67"
   end
 end

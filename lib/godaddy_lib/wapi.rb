@@ -191,7 +191,25 @@ module GoDaddyReseller
       return result
     end
 
+    def wapi_modify_dns(dnsRequestArray, sDomain)
+      #DATNT DEBUG TO FIX
+      uuid_hash = c.class.uuid_hash
+      #END DATNT DEBUG TO FIX
+      response = c.soap(:ModifyDNS, {
+        :ModifyDNS => {
+          :_attributes => { :xmlns => 'http://wildwestdomains.com/webservices/' },
+          :dnsRequestArray => dnsRequestArray,
+          :sDomain => sDomain
+        }.update(creds).update(uuid_hash) }
+      )
 
+      result = c.class.decode(response.body)
+      if result['result']['code'] == '1000'
+        return true
+      else
+        return false
+      end
+    end
 
     # # Convenience method on top of the manage api call, for cancelling an item
     # def cancel(resourceid, type = 'deferred')

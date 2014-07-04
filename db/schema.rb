@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140630083757) do
+ActiveRecord::Schema.define(version: 20140704033803) do
 
   create_table "contact_infos", force: true do |t|
     t.string   "fname"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20140630083757) do
     t.integer  "contact_info_id", default: 0
     t.integer  "order_item_id",   default: 0
     t.string   "domain_type"
+    t.string   "password"
   end
 
 end
