@@ -1,0 +1,92 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<h1>New Domain Registration</h1>
+			<%= form_tag("/domain_purchases/check_domain", method: "post", :class=>"form-inline", :id=>'frm_check_domain') do %>
+
+			<div class="form-group">
+				<label>Enter new domain:   www.</label>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control required" name="domain[name]">
+			</div>
+			<div class="form-group">
+				<select class="form-control" name="domain[type]">
+					<option value="COM">.COM</option>
+					<option value="NET">.NET</option>
+					<option value="ORG">.ORG</option>
+					<option value="INFO">.INFO</option>
+					<option value="BIZ">.BIZ</option>
+					<option value="WS">.WS</option>
+					<option value="US">.US</option>
+					<option value="TV">.TV</option>
+					<option value="MX">.MX</option>
+					<option value="COM.MX">.COM.MX</option>
+					<option value="ME">.ME</option>
+					<option value="MOBI">.MOBI</option>
+					<option value="IN">.IN</option>
+					<option value="CO.IN">.CO.IN</option>
+					<option value="FIRM.IN">.FIRM.IN</option>
+					<option value="GEN.IN">.GEN.IN</option>
+					<option value="IDN.IN">.IDN.IN</option>
+					<option value="NET.IN">.NET.IN</option>
+					<option value="ORG.IN">.ORG.IN</option>
+					<option value="BZ">.BZ</option>
+					<option value="COM.BZ">.COM.BZ</option>
+					<option value="NET.BZ">.NET.BZ</option>
+					<option value="MX">.MX</option>
+					<option value="NL">.NL</option>
+					<option value="ES">.ES</option>
+					<option value="COM.ES">.COM.ES</option>
+					<option value="ORG.ES">.ORG.ES</option>
+					<option value="NOM.ES">.NOM.ES</option>
+					<option value="BR">.BR</option>
+					<option value="COM.BR">.COM.BR</option>
+					<option value="NET.BR">.NET.BR</option>
+					<option value="CO">.CO</option>
+					<option value="COM.CO">.COM.CO</option>
+					<option value="NET.CO">.NET.CO</option>
+					<option value="NOM.CO">.NOM.CO</option>
+				</select>
+			</div>
+			<button type="submit" class="btn btn-success">Check Domain</button>
+			<%end%>
+
+			<% if @check %>
+				<% if @check == "true" %>
+				<br><br><br><br>
+				<div class="row domain-available" style="padding:40px;">
+					<p>Yes! <a href="/domain_purchases/register_domain"><%= @domain%></a> is available</p>
+					<a href="/domain_purchases/register_domain" class="btn btn-success">Register This Domain Now!</a>
+				</div>
+				<%else%>
+					<%if @message == '' %>
+					<br><br><br><br>
+					<div class="row domain-registered" style="padding:40px;">
+						<p>Sorry! <a href=""><%= @domain%></a> is registered</p>
+					</div>
+					<%else%>
+					<br><br><br><br>
+					<div class="row domain-registered" style="padding:40px;">
+						<p><%= @message%></p>
+					</div>
+					<%end%>
+				<%end%>
+			<%end%>
+		</div>
+	</div>
+</div>
+
+<style>
+label.error{
+	color: red;
+}
+</style>
+<script>
+$(function(){
+
+	$('#frm_check_domain').validate_popover({ popoverPosition: 'top' });
+	$('#frm_check_domain').validate();
+
+});
+</script>

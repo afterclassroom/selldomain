@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+  resources :domain_purchases do
+    collection do
+      get :query_poll, :purchase_privacy, :info_query, :check_domain, :register_domain, :confirm_purchase
+      post :check_domain, :register_domain, :buy_domain
+    end
+
+  end
+
+  get '/' => 'domain_purchases#check_domain'
+  get '/get_price_domain' => 'domain_purchases#get_price'
+  get '/get_state' => 'domain_purchases#get_state'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

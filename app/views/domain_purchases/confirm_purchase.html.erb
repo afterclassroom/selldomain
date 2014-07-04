@@ -1,0 +1,160 @@
+<div class="container">
+	<div class="row">
+		<h1>Confirm Domain Purchase:
+			<% if session['domain'] %>
+			<%= (session['domain']['name']+"."+session['domain']['type']).upcase %>
+			<% end %>
+		</h1>
+		<br><br>
+
+		<div class="col-sm-12">
+			<div class="row">
+				<%= form_tag("/domain_purchases/buy_domain", method: "post", :class=>"form-horizontal") do %>
+				<div class="col-sm-9" style="border-right: 3px solid #eee;">
+
+					<h4>Owner Infor</h4>
+					<hr>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">First Name:</label>
+								<div class="col-sm-8">
+									<%= session['contact_info']['fname']%>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Last Name:</label>
+								<div class="col-sm-8">
+									<%= session['contact_info']['lname']%>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Organization:</label>
+								<div class="col-sm-8">
+									<%= session['contact_info']['org']%>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Phone:</label>
+								<div class="col-sm-8">
+									<%= session['contact_info']['phone']%>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Fax:</label>
+								<div class="col-sm-8">
+									<%= session['contact_info']['fax']%>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Email:</label>
+								<div class="col-sm-8">
+									<%= session['contact_info']['email']%>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Address 1:</label>
+								<div class="col-sm-8">
+									<%= session['contact_info']['sa1']%>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Address 2:</label>
+								<div class="col-sm-8">
+									<%= session['contact_info']['sa2']%>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">City:</label>
+								<div class="col-sm-8">
+									<%= session['contact_info']['city']%>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">State:</label>
+								<div class="col-sm-8">
+									<%= session['contact_info']['sp']%>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Country:</label>
+								<div class="col-sm-8">
+									<%= session['contact_info']['cc']%>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Postal Code:</label>
+								<div class="col-sm-8">
+									<%= session['contact_info']['pc']%>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<br><br>
+					<div class="row">
+						<div class="col-md-9 col-md-offset-3">
+							<div class="checkbox checkbox-error">
+								<label>
+									I accept the terms of the domain registaion agreement
+								</label>
+								<input type="checkbox" name='contact.agree' checked>
+							</div>
+							<br>
+							<div class="form-group">
+								<div class="col-sm-8">
+									<button class="btn btn-primary">Confirm Purchase</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="col-sm-3">
+
+					<h4>Owner Summary</h4>
+					<hr>
+					<div class="form-group">
+						<label class="col-sm-5 control-label">Domain:</label>
+						<div class="col-sm-7">
+							<p class="form-control-static">
+								<a href="">
+									<% if session['domain'] %>
+									<%= (session['domain']['name']+"."+session['domain']['type']).upcase %>
+									<% end %>
+								</a>
+							</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-5 control-label">Term</label>
+						<div class="col-sm-7">
+							<%= session['order_item']['term']%>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-5 control-label">Unit Price:</label>
+						<div class="col-sm-7">
+							<p class="form-control-static"><span id='price-per-year'><%= session['order_item']['price_per_year']%></span>/year</p>
+						</div>
+					</div>
+					<hr>
+					<div class="form-group">
+						<label class="col-sm-5 control-label">Total Price:</label>
+						<div class="col-sm-7">
+							<p class="form-control-static" id='total-price'><%= session['order_item']['total_price']%></p>
+						</div>
+					</div>
+
+				</div>
+
+				<br><br>
+
+				<%end%>
+			</div>
+		</div>
+	</div>
+</div>

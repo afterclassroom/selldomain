@@ -1,0 +1,255 @@
+<div class="container">
+	<div class="row">
+		<h1>Register Domain:
+			<% if session['domain'] %>
+			<%= (session['domain']['name']+"."+session['domain']['type']).upcase %>
+			<% end %>
+		</h1>
+		<br><br>
+
+		<div class="col-sm-12">
+			<div class="row">
+				<%= form_tag("/domain_purchases/register_domain", method: "post", :class=>"form-horizontal", :id=>'frm_register_domain') do %>
+
+				<div class="col-sm-9" style="border-right: 3px solid #eee;">
+
+					<h4>Owner Infor</h4>
+					<hr>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">First Name:</label>
+								<div class="col-sm-8">
+									<input class="form-control required" name='contact[fname]'>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Last Name:</label>
+								<div class="col-sm-8">
+									<input class="form-control required" name='contact[lname]'>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Organization:</label>
+								<div class="col-sm-8">
+									<input class="form-control" name='contact[org]'>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Phone:</label>
+								<div class="col-sm-8">
+									<input class="form-control required" name='contact[phone]'>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Fax:</label>
+								<div class="col-sm-8">
+									<input class="form-control required" name='contact[fax]'>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Email:</label>
+								<div class="col-sm-8">
+									<input type="email" class="form-control required email" name='contact[email]'>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Address 1:</label>
+								<div class="col-sm-8">
+									<input class="form-control required" name='contact[sa1]'>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Address 2:</label>
+								<div class="col-sm-8">
+									<input class="form-control" name='contact[sa2]'>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Country:</label>
+								<div class="col-sm-8">
+									<%= select_tag :contact_country, options_for_select(@list_country,0), :name => "contact[cc]", :class => "form-control" %>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">State:</label>
+								<div class="col-sm-8 state-container">
+									<%= select_tag :contact_state, options_for_select(@list_state,0), :name => "contact[sp]", :class => "form-control required" %>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">City:</label>
+								<div class="col-sm-8">
+									<input class="form-control required" name='contact[city]'>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Postal Code:</label>
+								<div class="col-sm-8">
+									<input class="form-control required" name='contact[pc]'>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<br><br>
+					<div class="row">
+						<div class="col-md-9 col-md-offset-3">
+							<div class="checkbox checkbox-error">
+								<label>
+									I accept the terms of the domain registaion agreement
+								</label>
+								<input type="checkbox" name='contact[agree]' class='required'>
+
+							</div>
+							<br>
+							<div class="form-group">
+								<div class="col-sm-8">
+									<button type="submit" class="btn btn-primary">Continue</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<% if @error && @error != ''%>
+					<div class="row">
+						<div class="col-md-9 col-md-offset-3">
+							<p style="color: red;"><%= @error%></p>
+						</div>
+					</div>
+					<%end%>
+				</div>
+
+				<div class="col-sm-3">
+
+					<h4>Owner Summary</h4>
+					<hr>
+					<div class="form-group">
+						<label class="col-sm-5 control-label">Domain:</label>
+						<div class="col-sm-7">
+							<p class="form-control-static">
+								<a href="">
+									<% if session['domain'] %>
+									<%= (session['domain']['name']+"."+session['domain']['type']).upcase %>
+									<% end %>
+								</a>
+							</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-5 control-label">Term</label>
+						<div class="col-sm-7">
+							<select class="form-control" name='order[term]' id='domain-term'>
+								<option value="1">1 year</option>
+								<option value="2">2 years</option>
+								<option value="3">3 years</option>
+								<option value="4">4 years</option>
+								<option value="5">5 years</option>
+								<option value="6">6 years</option>
+								<option value="7">7 years</option>
+								<option value="8">8 years</option>
+								<option value="9">9 years</option>
+								<option value="10">10 years</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-5 control-label">Unit Price:</label>
+						<div class="col-sm-7">
+							<p class="form-control-static"><span id='price-per-year'>undefined</span>/year</p>
+							<input type="hidden" name='order[price_per_year]' id="input-price-per-year">
+						</div>
+					</div>
+					<hr>
+					<div class="form-group">
+						<label class="col-sm-5 control-label">Total Price:</label>
+						<div class="col-sm-7">
+							<p class="form-control-static" id='total-price'>undefined</p>
+							<input type="hidden" name='order[total_price]' id='input-total-price'>
+						</div>
+					</div>
+
+				</div>
+
+				<br><br>
+
+				<%end%>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+label.error{
+	color: red;
+}
+.checkbox-error .error{
+	display: block;
+}
+</style>
+<script>
+
+var top_level_domain = "<%= session['domain']['type'] %>";
+
+function getPriceDomain(top_level_domain, num_years) {
+	path = '/get_price_domain'
+	$.ajax({
+		type: "GET",
+		url: path,
+		data: {
+			top_level_domain: top_level_domain,
+			num_years: num_years
+		},
+		success: function(response) {
+			if (num_years==1){
+				$('#price-per-year').html(response);
+				$('#input-price-per-year').val(response);
+				$('#total-price').html(response);
+				$('#input-total-price').val(response);
+			}else{
+				$('#total-price').html(response);
+				$('#input-total-price').val(response);
+			}
+		},
+		error: function() {
+		}
+	});
+}
+
+function getState(country) {
+	path = '/get_state'
+	$.ajax({
+		type: "GET",
+		url: path,
+		data: {
+			country: country
+		},
+		success: function(response) {
+			$('.state-container').html(response);
+		},
+		error: function() {
+		}
+	});
+}
+
+
+$(function(){
+
+	$('#frm_register_domain').validate_popover({ popoverPosition: 'top' });
+	$('#frm_register_domain').validate();
+
+	getPriceDomain(top_level_domain, 1);
+
+
+	$('#domain-term').change(function(){
+		getPriceDomain(top_level_domain, $(this).val());
+	});
+
+	$('#contact_country').change(function(){
+		$("#contact_state option").remove();
+		getState($(this).val());
+	});
+
+})
+</script>
