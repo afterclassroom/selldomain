@@ -289,7 +289,7 @@ class DomainPurchasesController < ApplicationController
   protected
 
   def prepare
-    @godaddy = GoDaddyReseller::API.new('1002104', '12345678') # usually in an initializer
+    @godaddy = GoDaddyReseller::API.new('502392', 'vietnam@!%DzXUlgM') # usually in an initializer
     @godaddy.authenticate # tests your login credentials
 
     # godaddy.run_certification # runs the cerfication script, required to open a production reseller account
