@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   end
 
-  get '/' => 'domain_purchases#check_domain'
+  #get '/' => 'domain_purchases#check_domain'
   get '/get_price_domain' => 'domain_purchases#get_price'
   get '/get_state' => 'domain_purchases#get_state'
 

@@ -9,6 +9,7 @@ require 'product_price'
 require 'country_table'
 require 'util'
 require 'wapi'
+require 'socket'
 
 class DomainPurchasesController < ApplicationController
   before_filter :prepare, :except => [:confirm_purchase, :get_state, :get_price]
@@ -54,35 +55,56 @@ class DomainPurchasesController < ApplicationController
 
   def check_domain
     session['domain'] = nil
+    session['point_to'] = nil
     session['complete'] = nil
     session['contact_info'] = nil
     session['order_item'] = nil
     session['user_password'] = nil
+    if params[:point_to] && params[:point_to] != ''
+      @point_to = params[:point_to]
+      if params[:domain] && params[:domain][:name] != ''
+        domain = params[:domain][:name]+"."+params[:domain][:type]
+        domain = domain.upcase
+        begin
+          result = @godaddy.check_availability([domain])
+        rescue => e
+          message = e.message
+        end
 
-    if params[:domain]
-      domain = params[:domain][:name]+"."+params[:domain][:type]
-      domain = domain.upcase
-      begin
-        result = @godaddy.check_availability([domain])
-      rescue => e
-        message = e.message
+        @domain = domain
+        if !result.nil? && result[domain] == true
+          session['domain'] ||= {}
+          session['domain']['name'] = params[:domain][:name].downcase
+          session['domain']['type'] = params[:domain][:type].downcase
+
+          session['complete'] ||= {}
+          session['complete']['step1'] = true
+          @check = "true"
+
+          begin
+            s = Socket.getaddrinfo(@point_to,nil)
+            session['point_to'] ||= {}
+            session['point_to']['ip'] = s[0][2]
+            session['point_to']['record_value'] = @point_to
+          rescue Exception => e
+            session['complete'] ||= {}
+            session['complete']['step1'] = false
+            @message = e.to_s
+            @check = "false"
+          end
+
+        else
+          session['complete'] ||= {}
+          session['complete']['step1'] = false
+          @message = message ? message : ''
+          @check = "false"
+        end
       end
-
-      @domain = domain
-      if !result.nil? && result[domain] == true
-        session['domain'] ||= {}
-        session['domain']['name'] = params[:domain][:name].downcase
-        session['domain']['type'] = params[:domain][:type].downcase
-
-        session['complete'] ||= {}
-        session['complete']['step1'] = true
-        @check = "true"
-      else
-        session['complete'] ||= {}
-        session['complete']['step1'] = false
-        @message = message ? message : ''
-        @check = "false"
-      end
+    else
+      session['complete'] ||= {}
+      session['complete']['step1'] = false
+      @message = "Parameter: point_to is required."
+      @check = "false"
     end
   end
 
@@ -96,7 +118,6 @@ class DomainPurchasesController < ApplicationController
   def get_state
     if params[:country] && params[:country] != ''
       @list_state = GoDaddyReseller::CountryTable::PRODUCT_COUNTRIES[params[:country]]
-      #render :text => @list_state.to_json
       render :layout => false
     else
       render :nothing => true
@@ -262,7 +283,7 @@ class DomainPurchasesController < ApplicationController
 
         api_result = new_reg.merge(account)
 
-        # result = update_dns('tiemtoi.com', '206.225.83.194', 'domain.gotoclassroom.com')
+        # result = update_dns('tiemtoi.com', session['point_to']['ip'], session['point_to']['record_value'])
         # puts("=======")
         # puts(result)
         # puts("=======")
