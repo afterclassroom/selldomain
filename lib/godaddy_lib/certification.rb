@@ -263,14 +263,13 @@ module GoDaddyReseller
       product_id = order_object[:product_id]
       order_period = order_object[:order_period]
       user_password = order_object[:user_password]
-
+      autorenew = order_object[:autorenew]
 
       result = order_domains({
         :shopper => {
           :user => 'createNew',
-          #:pwd => 'abcde',
           :pwd => user_password,
-          :pwdhint => 'abcde',
+          :pwdhint => '',
           :email => user_hash[:email],
           :firstname => user_hash[:fname],
           :lastname => user_hash[:lname],
@@ -286,7 +285,7 @@ module GoDaddyReseller
                 :riid => 1,
                 :duration => 1
               },
-              :sld => "#{domain_value}",
+              :sld => domain_value,
               :tld => domain_type,
               :period => order_period,
               :registrant => user_hash,
@@ -294,7 +293,7 @@ module GoDaddyReseller
               :admin => user_hash,
               :billing => user_hash,
               :tech => user_hash,
-              :autorenewflag => 1
+              :autorenewflag => autorenew
             }
           ]
         }

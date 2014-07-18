@@ -35,7 +35,7 @@ module GoDaddyReseller
     def initialize(userid = nil, pw = nil)
       self.connection = Connection.new
       #set_testing_mode(RAILS_ENV != 'production')
-      set_testing_mode(false)
+      set_testing_mode(true) #set environment: test
       credentials(userid, pw) if userid && pw
     end
 

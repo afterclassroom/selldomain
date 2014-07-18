@@ -34,4 +34,22 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  GoDaddyReseller_API = {
+    live: false,
+    user_id: "1002104",    #502392
+    password: "12345678"  #vietnam@!%DzXUlgM
+  }
+
+  PAYPAL_API = {
+    sandbox: true,
+    username: "pesomebeta-facilitator_api1.gmail.com",
+    password: "1404957560",
+    signature: "An5ns1Kso7MWUdW4ErQKJJJ4qi4-AkbPdqM1kV216sF.eg1o1Eb2wOwB"
+  }
+
+  PAYPAL_DEVELOPER_ACCOUNT = {
+    email: "pesomebeta@gmail.com",
+    password: "pesome123"
+  }
 end

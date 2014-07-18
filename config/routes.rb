@@ -11,6 +11,17 @@ Rails.application.routes.draw do
   get '/get_price_domain' => 'domain_purchases#get_price'
   get '/get_state' => 'domain_purchases#get_state'
 
+  resources :subscriptions
+  #root 'subscriptions#index'
+  root 'domain_purchases#check_domain'
+
+  get 'paypal/checkout' => 'subscriptions#paypal_checkout'
+  #get 'paypal/show' => 'subscriptions#show'
+  post 'paypal/ipn' => 'subscriptions#notification'
+
+  get 'paypal/checkout_express' => 'subscriptions#paypal_checkout_express'
+  get 'paypal/express' => 'subscriptions#paypal_express'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

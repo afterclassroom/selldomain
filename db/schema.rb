@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140704033803) do
+ActiveRecord::Schema.define(version: 20140718095325) do
 
   create_table "contact_infos", force: true do |t|
     t.string   "fname"
@@ -35,6 +35,21 @@ ActiveRecord::Schema.define(version: 20140704033803) do
     t.integer  "quantity",   default: 1
     t.string   "riid"
     t.float    "duration",   default: 1.0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "paypal_notifications", force: true do |t|
+    t.text     "params"
+    t.string   "txn_id"
+    t.string   "payer_id"
+    t.string   "txn_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "paypal_profiles", force: true do |t|
+    t.string   "profile_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

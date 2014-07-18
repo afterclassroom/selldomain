@@ -182,8 +182,9 @@ class DomainPurchasesController < ApplicationController
             session['order_item'] ||= {}
             session['order_item']['product_id'] = product_id
             session['order_item']['term'] = params[:order][:term]
-            session['order_item']['price_per_year'] = params[:order][:price_per_year]
+            session['order_item']['unit_price'] = params[:order][:unit_price]
             session['order_item']['total_price'] = params[:order][:total_price]
+            session['order_item']['auto_renew'] = params[:order][:auto_renew]
 
             if product_id != ""
               session['complete']['step2'] = true
@@ -250,13 +251,20 @@ class DomainPurchasesController < ApplicationController
         #  { :name => 'ns1.example.com' }, { :name => 'ns2.example.com' }
         #]
         session['user_password'] = SecureRandom.hex(3)
+        if session['order_item']['auto_renew'] == '1'
+          auto_renew = 1
+        else
+          auto_renew = 0
+        end
+
         other_custom_value = {
           domain_value: @overall_domain,
           domain_type: session['domain']['type'],
           user_hash: user_hash,
           product_id: session['order_item']['product_id'],
           order_period: session['order_item']['term'],
-          user_password: session['user_password']
+          user_password: session['user_password'],
+          auto_renew: auto_renew
         }
 
         new_reg = @godaddy.domain_name_registration_certification(other_custom_value)
@@ -283,10 +291,14 @@ class DomainPurchasesController < ApplicationController
 
         api_result = new_reg.merge(account)
 
-        # result = update_dns('tiemtoi.com', session['point_to']['ip'], session['point_to']['record_value'])
+        if GoDaddyReseller_API[:live]
+          # result = update_dns('tiemtoi.com', session['point_to']['ip'], session['point_to']['record_value'])
         # puts("=======")
         # puts(result)
         # puts("=======")
+        end
+
+
       rescue => e
         api_result = e
       end
@@ -331,6 +343,10 @@ class DomainPurchasesController < ApplicationController
     end
   end
 
+  def show
+    render :nothing => true
+  end
+
   def cancel_domain
     begin
       if params[:domain]
@@ -344,12 +360,8 @@ class DomainPurchasesController < ApplicationController
   protected
 
   def prepare
-    @godaddy = GoDaddyReseller::API.new('502392', 'vietnam@!%DzXUlgM') # usually in an initializer
-    @godaddy.authenticate # tests your login credentials
-
-    # godaddy.run_certification # runs the cerfication script, required to open a production reseller account
-
+    @godaddy = GoDaddyReseller::API.new(GoDaddyReseller_API[:user_id], GoDaddyReseller_API[:password])
+    @godaddy.authenticate
     @godaddy.reset_certification_run
-    #@overall_domain = "examplejun67"
   end
 end

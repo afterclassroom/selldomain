@@ -4,7 +4,7 @@
 			<div class="panel panel-default" style="margin-top: 20px;">
 				<div class="panel-heading">
 					<h3 class="panel-title">
-						Register Domain:
+						Step2: Register Domain:
 						<% if session['domain'] %>
 						<%= (session['domain']['name']+"."+session['domain']['type']).upcase %>
 						<% end %>
@@ -21,37 +21,37 @@
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="col-sm-4 control-label">First Name:</label>
+										<label class="col-sm-4 control-label">First Name</label>
 										<div class="col-sm-8">
 											<input class="form-control required" name='contact[fname]'>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label">Last Name:</label>
+										<label class="col-sm-4 control-label">Last Name</label>
 										<div class="col-sm-8">
 											<input class="form-control required" name='contact[lname]'>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label">Organization:</label>
+										<label class="col-sm-4 control-label">Organization</label>
 										<div class="col-sm-8">
 											<input class="form-control" name='contact[org]'>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label">Phone:</label>
+										<label class="col-sm-4 control-label">Phone</label>
 										<div class="col-sm-8">
 											<input class="form-control required" name='contact[phone]'>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label">Fax:</label>
+										<label class="col-sm-4 control-label">Fax</label>
 										<div class="col-sm-8">
 											<input class="form-control" name='contact[fax]'>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label">Email:</label>
+										<label class="col-sm-4 control-label">Email</label>
 										<div class="col-sm-8">
 											<input type="email" class="form-control required email" name='contact[email]'>
 										</div>
@@ -59,37 +59,37 @@
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="col-sm-4 control-label">Address 1:</label>
+										<label class="col-sm-4 control-label">Address 1</label>
 										<div class="col-sm-8">
 											<input class="form-control required" name='contact[sa1]'>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label">Address 2:</label>
+										<label class="col-sm-4 control-label">Address 2</label>
 										<div class="col-sm-8">
 											<input class="form-control" name='contact[sa2]'>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label">Country:</label>
+										<label class="col-sm-4 control-label">Country</label>
 										<div class="col-sm-8">
 											<%= select_tag :contact_country, options_for_select(@list_country,0), :name => "contact[cc]", :class => "form-control" %>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label">State:</label>
+										<label class="col-sm-4 control-label">State</label>
 										<div class="col-sm-8 state-container">
 											<%= select_tag :contact_state, options_for_select(@list_state,0), :name => "contact[sp]", :class => "form-control required" %>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label">City:</label>
+										<label class="col-sm-4 control-label">City</label>
 										<div class="col-sm-8">
 											<input class="form-control required" name='contact[city]'>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label">Postal Code:</label>
+										<label class="col-sm-4 control-label">Postal Code</label>
 										<div class="col-sm-8">
 											<input class="form-control required" name='contact[pc]'>
 										</div>
@@ -160,22 +160,22 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Unit Price:</label>
 								<div class="col-sm-8">
-									<p class="form-control-static"><span id='price-per-year'>undefined</span>/year</p>
-									<input type="hidden" name='order[price_per_year]' id="input-price-per-year">
+									<p class="form-control-static">$<span id='unit-price'>undefined</span></p>
+									<input id='input-unit-price' type="hidden" name='order[unit_price]' value="undefined">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Sale Tax:</label>
 								<div class="col-sm-8">
-									<p class="form-control-static"><span>$<%= SALE_TAX%></span></p>
+									<p class="form-control-static">$<span><%= SALE_TAX%></span></p>
 								</div>
 							</div>
 							<hr>
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Total Price:</label>
 								<div class="col-sm-8">
-									<p class="form-control-static" id='total-price'>undefined</p>
-									<input type="hidden" name='order[total_price]' id='input-total-price'>
+									<p class="form-control-static">$<span id='total-price'>undefined</span></p>
+									<input id='input-total-price' type="hidden" name='order[total_price]' value="undefined">
 								</div>
 							</div>
 							<div class="form-group">
@@ -224,18 +224,12 @@ function getPriceDomain(top_level_domain, num_years) {
 			num_years: num_years
 		},
 		success: function(response) {
-			// if (num_years==1){
-			// 	$('#price-per-year').html(response);
-			// 	$('#input-price-per-year').val(response);
-			// 	$('#total-price').html(response);
-			// 	$('#input-total-price').val(response);
-			// }else{
-			// 	$('#total-price').html(response);
-			// 	$('#input-total-price').val(response);
-			// }
-			$('#total-price').html(response);
-			$('#input-total-price').val(response);
-
+			response = response.replace("$", "");
+			$('#unit-price').html(response);
+			$('#input-unit-price').val(response);
+			var total_price = (parseFloat(response) + parseFloat(sale_tax)).toPrecision(4);
+			$('#total-price').html(total_price);
+			$('#input-total-price').val(total_price);
 		},
 		error: function() {
 		}

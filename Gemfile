@@ -28,6 +28,7 @@ gem 'spring',        group: :development
 gem 'nokogiri'
 gem 'uuid'
 gem 'dotenv-rails'
+gem 'paypal-express'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
