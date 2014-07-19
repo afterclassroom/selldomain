@@ -10,8 +10,8 @@ class SubscriptionsController < ApplicationController
   #check out for recurring
   def paypal_checkout_recurring
     description = "Pay to buy this domain."
-    description += "Domain: " + (session['domain']['name']+"."+session['domain']['type']).upcase +"."
-    description += "billing:"
+    description += "Domain: " + (session['domain']['name']+"."+session['domain']['type']).upcase
+    description += ".billing:"
     description += " -period: Month,"
     description += " -frequency: 12,"
     description += " -amount: " + session['order_item']['total_price'] +","
@@ -40,8 +40,8 @@ class SubscriptionsController < ApplicationController
 
   def paypal_recurring
     description = "Pay to buy this domain."
-    description += "Domain: " + (session['domain']['name']+"."+session['domain']['type']).upcase +"."
-    description += "billing:"
+    description += "Domain: " + (session['domain']['name']+"."+session['domain']['type']).upcase
+    description += ".billing:"
     description += " -period: Month,"
     description += " -frequency: 12,"
     description += " -amount: " + session['order_item']['total_price'] +","
@@ -100,8 +100,8 @@ class SubscriptionsController < ApplicationController
   #check out for express
   def paypal_checkout_express
     description = "Pay to buy this domain."
-    description += "Domain: " + (session['domain']['name']+"."+session['domain']['type']).upcase +"."
-    description += "billing:"
+    description += "Domain: " + (session['domain']['name']+"."+session['domain']['type']).upcase
+    description += ".billing:"
     description += " -amount: " + session['order_item']['total_price'] +","
     description += " -currency_code: USD."
 
@@ -133,8 +133,8 @@ class SubscriptionsController < ApplicationController
 
   def paypal_express
     description = "Pay to buy this domain."
-    description += "Domain: " + (session['domain']['name']+"."+session['domain']['type']).upcase +"."
-    description += "billing:"
+    description += "Domain: " + (session['domain']['name']+"."+session['domain']['type']).upcase
+    description += ".billing:"
     description += " -amount: " + session['order_item']['total_price'] +","
     description += " -currency_code: USD."
 
