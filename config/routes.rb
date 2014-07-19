@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   resources :domain_purchases do
     collection do
-      get :query_poll, :purchase_privacy, :info_query, :check_domain, :register_domain, :confirm_purchase
-      post :check_domain, :register_domain, :buy_domain
+      get :query_poll, :purchase_privacy, :info_query, :check_domain, :register_domain, :confirm_purchase, :buy_domain, :thanks, :sorry
+      post :check_domain, :register_domain, :paypal
     end
 
   end
@@ -15,12 +15,15 @@ Rails.application.routes.draw do
   #root 'subscriptions#index'
   root 'domain_purchases#check_domain'
 
-  get 'paypal/checkout' => 'subscriptions#paypal_checkout'
+
   #get 'paypal/show' => 'subscriptions#show'
-  post 'paypal/ipn' => 'subscriptions#notification'
+
 
   get 'paypal/checkout_express' => 'subscriptions#paypal_checkout_express'
   get 'paypal/express' => 'subscriptions#paypal_express'
+  get 'paypal/checkout_recurring' => 'subscriptions#paypal_checkout_recurring'
+  get 'paypal/recurring' => 'subscriptions#paypal_recurring'
+  post 'paypal/ipn' => 'subscriptions#notification'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

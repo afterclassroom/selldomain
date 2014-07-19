@@ -263,7 +263,7 @@ module GoDaddyReseller
       product_id = order_object[:product_id]
       order_period = order_object[:order_period]
       user_password = order_object[:user_password]
-      autorenew = order_object[:autorenew]
+      auto_renew = order_object[:auto_renew]
 
       result = order_domains({
         :shopper => {
@@ -293,7 +293,7 @@ module GoDaddyReseller
               :admin => user_hash,
               :billing => user_hash,
               :tech => user_hash,
-              :autorenewflag => autorenew
+              :autorenewflag => auto_renew
             }
           ]
         }

@@ -12,7 +12,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<%= form_tag("/domain_purchases/buy_domain", method: "post", :class=>"form-horizontal") do %>
+						<%= form_tag("/domain_purchases/paypal", method: "post", :class=>"form-horizontal") do %>
 						<div class="col-sm-8" style="border-right: 3px solid #eee;">
 
 							<h4>Owner Infor</h4>
@@ -136,43 +136,48 @@
 								<label class="col-sm-4 control-label">Term:</label>
 								<div class="col-sm-8">
 									<p class="form-control-static">
-										<%= session['order_item']['term']%>
-									</p>
+										<% if session['order_item']['term'] == '1'
+											term = 'year'
+										else
+											term = 'years'
+											end %>
+											<%= session['order_item']['term']%> <%= term%>
+										</p>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label">Unit Price:</label>
+									<div class="col-sm-8">
+										<p class="form-control-static">$<%= session['order_item']['unit_price']%></p>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label">Sale Tax:</label>
+									<div class="col-sm-8">
+										<p class="form-control-static">$<span><%= SALE_TAX%></span></p>
+									</div>
+								</div>
+								<hr>
+								<div class="form-group">
+									<label class="col-sm-4 control-label">Total Price:</label>
+									<div class="col-sm-8">
+										<p class="form-control-static">$<%= session['order_item']['total_price']%></p>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label">Auto Renew:</label>
+									<div class="col-sm-8">
+										<p class="form-control-static"><input type="checkbox" disabled value="1" class="g-inline" <%= "checked" if session['order_item']['auto_renew'] == '1' %>></p>
+									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label">Unit Price:</label>
-								<div class="col-sm-8">
-									<p class="form-control-static">$<%= session['order_item']['unit_price']%></p>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label">Sale Tax:</label>
-								<div class="col-sm-8">
-									<p class="form-control-static">$<span><%= SALE_TAX%></span></p>
-								</div>
-							</div>
-							<hr>
-							<div class="form-group">
-								<label class="col-sm-4 control-label">Total Price:</label>
-								<div class="col-sm-8">
-									<p class="form-control-static">$<%= session['order_item']['total_price']%></p>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label">Auto Renew:</label>
-								<div class="col-sm-8">
-									<p class="form-control-static"><input type="checkbox" disabled value="1" class="g-inline" <%= "checked" if session['order_item']['auto_renew'] == '1' %>></p>
-								</div>
-							</div>
+
+							<br><br>
+
+							<%end%>
 						</div>
-
-						<br><br>
-
-						<%end%>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>

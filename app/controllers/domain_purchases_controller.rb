@@ -12,7 +12,7 @@ require 'wapi'
 require 'socket'
 
 class DomainPurchasesController < ApplicationController
-  before_filter :prepare, :except => [:confirm_purchase, :get_state, :get_price]
+  before_filter :prepare, :except => [:confirm_purchase, :get_state, :get_price, :paypal, :thanks, :sorry]
   http_basic_authenticate_with :name => "gotoclassroom", :password => "vietnam2011"
 
   def query_poll
@@ -211,15 +211,23 @@ class DomainPurchasesController < ApplicationController
         end
       end
     else
-      redirect_to "/"
+      redirect_to :controller => 'domain_purchases', :action => 'sorry'
     end
   end
 
   def confirm_purchase
   end
 
+  def paypal
+    if session['order_item']['auto_renew'] == '1'
+      redirect_to :controller => 'subscriptions', :action => 'paypal_checkout_recurring'
+    else
+      redirect_to :controller => 'subscriptions', :action => 'paypal_checkout_express'
+    end
+  end
+
   def buy_domain
-    if session['complete'] && session['complete']['step2'] == true
+    if session['complete'] && session['complete']['step3'] == true
 
       contact = {
         :fname => session['contact_info']['fname'],
@@ -292,20 +300,17 @@ class DomainPurchasesController < ApplicationController
         api_result = new_reg.merge(account)
 
         if GoDaddyReseller_API[:live]
-          # result = update_dns('tiemtoi.com', session['point_to']['ip'], session['point_to']['record_value'])
-        # puts("=======")
-        # puts(result)
-        # puts("=======")
+          domain = session['domain']['name']+"."+session['domain']['type']
+          result = update_dns(domain, session['point_to']['ip'], session['point_to']['record_value'])
         end
 
-
+        redirect_to :controller => 'domain_purchases', :action => 'thanks'
       rescue => e
         api_result = e
       end
-      render :text => api_result
-    else
-      redirect_to "/"
-    end
+     else
+       redirect_to :controller => 'domain_purchases', :action => 'sorry'
+     end
   end
 
   def update_dns(sDomain, ip, record_value, action = 'set')
@@ -341,6 +346,18 @@ class DomainPurchasesController < ApplicationController
     rescue
       return false
     end
+  end
+
+  def thanks
+    session['domain'] = nil
+    session['point_to'] = nil
+    session['complete'] = nil
+    session['contact_info'] = nil
+    session['order_item'] = nil
+    session['user_password'] = nil
+  end
+
+  def sorry
   end
 
   def show
