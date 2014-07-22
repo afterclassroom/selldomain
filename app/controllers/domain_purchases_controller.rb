@@ -12,7 +12,7 @@ require 'wapi'
 require 'socket'
 
 class DomainPurchasesController < ApplicationController
-  before_filter :prepare, :except => [:confirm_purchase, :get_state, :get_price, :paypal, :thanks, :sorry]
+  before_filter :prepare, :except => [:check_domain, :register_domain, :confirm_purchase, :get_state, :get_price, :paypal, :thanks, :sorry]
   http_basic_authenticate_with :name => "gotoclassroom", :password => "vietnam2011"
 
   def query_poll
@@ -54,12 +54,14 @@ class DomainPurchasesController < ApplicationController
   end
 
   def check_domain
-    session['domain'] = nil
-    session['point_to'] = nil
-    session['complete'] = nil
-    session['contact_info'] = nil
-    session['order_item'] = nil
-    session['user_password'] = nil
+    if params[:point_to] && params[:point_to] != ''
+      @point_to = params[:point_to]
+    else
+      flash[:error] = "Parameter: point_to is required."
+    end
+  end
+
+  def do_check_domain
     if params[:point_to] && params[:point_to] != ''
       @point_to = params[:point_to]
       if params[:domain] && params[:domain][:name] != ''
@@ -79,32 +81,28 @@ class DomainPurchasesController < ApplicationController
 
           session['complete'] ||= {}
           session['complete']['step1'] = true
-          @check = "true"
 
           begin
             s = Socket.getaddrinfo(@point_to,nil)
             session['point_to'] ||= {}
             session['point_to']['ip'] = s[0][2]
             session['point_to']['record_value'] = @point_to
+            redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :success => 'success'}
           rescue Exception => e
             session['complete'] ||= {}
             session['complete']['step1'] = false
             @message = e.to_s
-            @check = "false"
+            redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :error => @message }
           end
-
         else
           session['complete'] ||= {}
           session['complete']['step1'] = false
           @message = message ? message : ''
-          @check = "false"
+          redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :success => @message }
         end
       end
     else
-      session['complete'] ||= {}
-      session['complete']['step1'] = false
-      @message = "Parameter: point_to is required."
-      @check = "false"
+      redirect_to check_domain_domain_purchases_path(), :flash => { :error => "Parameter: point_to is required." }
     end
   end
 
@@ -128,7 +126,13 @@ class DomainPurchasesController < ApplicationController
     if session['complete'] && session['complete']['step1'] == true
       @list_country = GoDaddyReseller::CountryTable::PRODUCT_COUNTRIES.keys
       @list_state = GoDaddyReseller::CountryTable::PRODUCT_COUNTRIES[@list_country[0]]
+    else
+      redirect_to :controller => 'domain_purchases', :action => 'sorry'
+    end
+  end
 
+  def do_register_domain
+    if session['complete'] && session['complete']['step1'] == true
       if params[:contact]
         #step1:check valid data
         begin
@@ -192,22 +196,24 @@ class DomainPurchasesController < ApplicationController
             else
               @error = "Something is wrong!"
               session['complete']['step2'] = false
+              redirect_to register_domain_domain_purchases_path(), :flash => { :error => @error}
             end
           else
             @error = 'Error: '
-
             if result['failure']['contact']['error'].kind_of?(Array)
               result['failure']['contact']['error'].each_with_index do |e, index|
-                @error +=  (index+1).to_s + e['desc'] + ': ' + e['displaystring'] +'.'
+                @error +=  (index+1).to_s + ": "+ e['desc'] + '=> ' + e['displaystring'] +'. <br />'
               end
             else
               @error += result['failure']['contact']['error']['desc'] + ': ' + result['failure']['contact']['error']['displaystring'] +'.'
             end
             session['complete']['step2'] = false
+            redirect_to register_domain_domain_purchases_path(), :flash => { :error => @error}
           end
         rescue => e
           @error = "Something is wrong!"
           session['complete']['step2'] = false
+          redirect_to register_domain_domain_purchases_path(), :flash => { :error => @error}
         end
       end
     else
@@ -308,77 +314,83 @@ class DomainPurchasesController < ApplicationController
       rescue => e
         api_result = e
       end
-     else
-       redirect_to :controller => 'domain_purchases', :action => 'sorry'
-     end
+    else
+     redirect_to :controller => 'domain_purchases', :action => 'sorry'
+   end
+ end
+
+ def update_dns(sDomain, ip, record_value, action = 'set')
+  begin
+    dnsRequest1 = {
+      :action => action,
+      :recType => 'A',
+      :ttl => 432000,
+      :recValue => ip
+    }
+
+    dnsRequest2 = {
+      :action => action,
+      :recType => 'CNAME',
+      :ttl => 432000,
+      :key => 'www',
+      :recValue => record_value
+    }
+
+    dnsRequest3 = {
+      :action => action,
+      :recType => 'MX',
+      :ttl => 432000,
+      :recValue => record_value
+    }
+
+    dnsRequestArray = [
+      [{:DNSRequest => dnsRequest1}],[{:DNSRequest => dnsRequest2}],[{:DNSRequest => dnsRequest3}]
+    ]
+
+    result = @godaddy.modify_dns(dnsRequestArray, sDomain)
+    return result
+  rescue
+    return false
   end
+end
 
-  def update_dns(sDomain, ip, record_value, action = 'set')
-    begin
-      dnsRequest1 = {
-        :action => action,
-        :recType => 'A',
-        :ttl => 432000,
-        :recValue => ip
-      }
+def thanks
+  session['domain'] = nil
+  session['point_to'] = nil
+  session['complete'] = nil
+  session['contact_info'] = nil
+  session['order_item'] = nil
+  session['user_password'] = nil
+end
 
-      dnsRequest2 = {
-        :action => action,
-        :recType => 'CNAME',
-        :ttl => 432000,
-        :key => 'www',
-        :recValue => record_value
-      }
+def sorry
+  session['domain'] = nil
+  session['point_to'] = nil
+  session['complete'] = nil
+  session['contact_info'] = nil
+  session['order_item'] = nil
+  session['user_password'] = nil
+end
 
-      dnsRequest3 = {
-        :action => action,
-        :recType => 'MX',
-        :ttl => 432000,
-        :recValue => record_value
-      }
+def show
+  render :nothing => true
+end
 
-      dnsRequestArray = [
-        [{:DNSRequest => dnsRequest1}],[{:DNSRequest => dnsRequest2}],[{:DNSRequest => dnsRequest3}]
-      ]
+def cancel_domain
+  begin
+    if params[:domain]
 
-      result = @godaddy.modify_dns(dnsRequestArray, sDomain)
-      return result
-    rescue
-      return false
     end
+  rescue
+
   end
+end
 
-  def thanks
-    session['domain'] = nil
-    session['point_to'] = nil
-    session['complete'] = nil
-    session['contact_info'] = nil
-    session['order_item'] = nil
-    session['user_password'] = nil
-  end
+protected
 
-  def sorry
-  end
-
-  def show
-    render :nothing => true
-  end
-
-  def cancel_domain
-    begin
-      if params[:domain]
-
-      end
-    rescue
-
-    end
-  end
-
-  protected
-
-  def prepare
-    @godaddy = GoDaddyReseller::API.new(GoDaddyReseller_API[:user_id], GoDaddyReseller_API[:password])
-    @godaddy.authenticate
-    @godaddy.reset_certification_run
-  end
+def prepare
+  @godaddy = GoDaddyReseller::API.new(GoDaddyReseller_API[:user_id], GoDaddyReseller_API[:password])
+  @godaddy.authenticate
+  @godaddy.reset_certification_run
+end
 end

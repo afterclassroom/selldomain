@@ -6,7 +6,7 @@
 					<h3 class="panel-title">Step1: New Domain Registration</h3>
 				</div>
 				<div class="panel-body" style="min-height: 250px;">
-					<%= form_tag("/domain_purchases/do_check_domain?point_to="+@point_to.to_s, method: "post", :class=>"form-inline", :id=>'frm_check_domain') do %>
+					<%= form_tag("/domain_purchases/check_domain?point_to="+@point_to.to_s, method: "post", :class=>"form-inline", :id=>'frm_check_domain') do %>
 
 					<div class="form-group">
 						<label>Enter new domain:   www.</label>
@@ -55,26 +55,27 @@
 					<button type="submit" class="btn btn-success">Check Domain</button>
 					<%end%>
 
-					<% if flash[:error].present? %>
+					<% if @check %>
+					<% if @check == "true" %>
 					<br><br>
-					<div class="row domain-registered" style="padding:30px;">
-						<p><%= flash[:error] %></p>
+					<div class="row domain-available" style="padding:30px;">
+						<p>Congratulation! <a href="/domain_purchases/register_domain">www.<%= @domain%></a> is available</p>
+						<a href="/domain_purchases/register_domain" class="btn btn-success">Register This Domain Now!</a>
 					</div>
 					<%else%>
-						<% if flash[:success] == "success" %>
-							<br><br>
-							<div class="row domain-available" style="padding:30px;">
-								<p>Congratulation! <a href="/domain_purchases/register_domain">www.<%= params[:sdomain]%></a> is available</p>
-								<a href="/domain_purchases/register_domain" class="btn btn-success">Register This Domain Now!</a>
-							</div>
-						<%else%>
-							<% if flash[:success] == "" %>
-								<div class="row domain-registered" style="padding:30px;">
-									<p>Sorry my dear! <a href="">www.<%= params[:sdomain]%></a> is no longer available, <a href="">search again</a></p>
-								</div>
-							<%end%>
-						<%end%>
-					<% end %>
+					<%if @message == '' %>
+					<br><br>
+					<div class="row domain-registered" style="padding:30px;">
+						<p>Sorry my dear! <a href="">www.<%= @domain%></a> is no longer available, <a href="">search again</a></p>
+					</div>
+					<%else%>
+					<br><br>
+					<div class="row domain-registered" style="padding:30px;">
+						<p><%= @message%></p>
+					</div>
+					<%end%>
+					<%end%>
+					<%end%>
 				</div>
 			</div>
 		</div>

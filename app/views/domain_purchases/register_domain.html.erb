@@ -12,7 +12,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<%= form_tag("/domain_purchases/register_domain", method: "post", :class=>"form-horizontal", :id=>'frm_register_domain') do %>
+						<%= form_tag("/domain_purchases/do_register_domain", method: "post", :class=>"form-horizontal", :id=>'frm_register_domain') do %>
 
 						<div class="col-sm-8" style="border-right: 3px solid #eee;">
 
@@ -23,37 +23,37 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label">First Name</label>
 										<div class="col-sm-8">
-											<input class="form-control required" name='contact[fname]' value='Artemus'>
+											<input class="form-control required" name='contact[fname]'>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Last Name</label>
 										<div class="col-sm-8">
-											<input class="form-control required" name='contact[lname]' value='Gordon'>
+											<input class="form-control required" name='contact[lname]'>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Organization</label>
 										<div class="col-sm-8">
-											<input class="form-control" name='contact[org]' value='gotoClassroom'>
+											<input class="form-control" name='contact[org]'>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Phone</label>
 										<div class="col-sm-8">
-											<input class="form-control required" name='contact[phone]' value='+1.8885551212'>
+											<input class="form-control required" name='contact[phone]'>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Fax</label>
 										<div class="col-sm-8">
-											<input class="form-control" name='contact[fax]' value='+1.8885551212'>
+											<input class="form-control" name='contact[fax]'>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Email</label>
 										<div class="col-sm-8">
-											<input type="email" class="form-control required email" name='contact[email]' value='info@gotoclassroom.com'>
+											<input type="email" class="form-control required email" name='contact[email]'>
 										</div>
 									</div>
 								</div>
@@ -61,7 +61,7 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Address 1</label>
 										<div class="col-sm-8">
-											<input class="form-control required" name='contact[sa1]' value='2 N. Main St.'>
+											<input class="form-control required" name='contact[sa1]'>
 										</div>
 									</div>
 									<div class="form-group">
@@ -85,13 +85,13 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label">City</label>
 										<div class="col-sm-8">
-											<input class="form-control required" name='contact[city]' value='Hamilton'>
+											<input class="form-control required" name='contact[city]'>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Postal Code</label>
 										<div class="col-sm-8">
-											<input class="form-control required" name='contact[pc]' value='55555'>
+											<input class="form-control required" name='contact[pc]'>
 										</div>
 									</div>
 								</div>
@@ -115,10 +115,10 @@
 									</div>
 								</div>
 							</div>
-							<% if @error && @error != ''%>
+							<% if flash[:error].present? %>
 							<div class="row">
-								<div class="col-md-9 col-md-offset-3">
-									<p style="color: red;"><%= @error%></p>
+								<div class="col-md-9 col-md-offset-3" style="color: red;">
+									<%= simple_format(flash[:error]) %>
 								</div>
 							</div>
 							<%end%>

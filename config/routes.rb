@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :domain_purchases do
     collection do
       get :query_poll, :purchase_privacy, :info_query, :check_domain, :register_domain, :confirm_purchase, :buy_domain, :thanks, :sorry
-      post :check_domain, :register_domain, :paypal
+      post :do_check_domain, :do_register_domain, :paypal
     end
 
   end
