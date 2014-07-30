@@ -55,6 +55,10 @@ class DomainPurchasesController < ApplicationController
   end
 
   def check_domain
+    if !params[:auto_redirect]
+      flash[:error] = nil
+    end
+
     if params[:point_to] && params[:point_to] != ''
       @point_to = params[:point_to]
     else
@@ -85,19 +89,19 @@ class DomainPurchasesController < ApplicationController
               session['point_to'] ||= {}
               session['point_to']['ip'] = s[0][2]
               session['point_to']['record_value'] = @point_to
-              redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :success => 'success'}
+              redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain, :auto_redirect => true), :flash => { :success => 'success'}
             rescue => e
               session['complete'] ||= {}
               session['complete']['step1'] = false
-              redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :error => e.message }
+              redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain, :auto_redirect => true), :flash => { :error => e.message }
             end
           else
             session['complete'] ||= {}
             session['complete']['step1'] = false
-            redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :success => ''}
+            redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain, :auto_redirect => true), :flash => { :success => ''}
           end
         rescue => e
-          redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :error => e.message }
+          redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain, :auto_redirect => true), :flash => { :error => e.message }
         end
       end
     else
