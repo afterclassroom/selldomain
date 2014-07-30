@@ -52,17 +52,16 @@
 						</select>
 					</div>
 					<input type="hidden" name="point_to" value="<%= @point_to.to_s%>">
-					<button type="submit" class="btn btn-success">Check Domain</button>
+					<button type="submit" class="btn btn-success" <%= "disabled" if flash[:error].present? && flash[:error]== "Parameter: point_to is required." %>>Check Domain</button>
 					<%end%>
 
-					<% if flash[:error].present? %>
 					<br><br>
+					<% if flash[:error].present? %>
 					<div class="row domain-registered" style="padding:30px;">
 						<p><%= flash[:error] %></p>
 					</div>
 					<%else%>
 						<% if flash[:success] == "success" %>
-							<br><br>
 							<div class="row domain-available" style="padding:30px;">
 								<p>Congratulation! <a href="/domain_purchases/register_domain">www.<%= params[:sdomain]%></a> is available</p>
 								<a href="/domain_purchases/register_domain" class="btn btn-success">Register This Domain Now!</a>

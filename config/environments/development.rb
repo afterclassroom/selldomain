@@ -37,8 +37,8 @@ Rails.application.configure do
 
   GoDaddyReseller_API = {
     live: false,
-    user_id: "1002104",    #502392
-    password: "12345678"  #vietnam@!%DzXUlgM
+    user_id: "1002104",
+    password: "12345678"
   }
 
   PAYPAL_API = {

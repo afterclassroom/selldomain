@@ -10,6 +10,7 @@ require 'country_table'
 require 'util'
 require 'wapi'
 require 'socket'
+require 'uri'
 
 class DomainPurchasesController < ApplicationController
   before_filter :prepare, :except => [:check_domain, :register_domain, :confirm_purchase, :get_state, :get_price, :paypal, :thanks, :sorry]
@@ -54,9 +55,6 @@ class DomainPurchasesController < ApplicationController
   end
 
   def check_domain
-    puts('==========')
-    puts(GoDaddyReseller_API[:live])
-    puts('==========')
     if params[:point_to] && params[:point_to] != ''
       @point_to = params[:point_to]
     else
@@ -72,36 +70,34 @@ class DomainPurchasesController < ApplicationController
         domain = domain.upcase
         begin
           result = @godaddy.check_availability([domain])
-        rescue => e
-          message = e.message
-        end
 
-        @domain = domain
-        if !result.nil? && result[domain] == true
-          session['domain'] ||= {}
-          session['domain']['name'] = params[:domain][:name].downcase
-          session['domain']['type'] = params[:domain][:type].downcase
+          @domain = domain
+          if !result.nil? && result[domain] == true
+            session['domain'] ||= {}
+            session['domain']['name'] = params[:domain][:name].downcase
+            session['domain']['type'] = params[:domain][:type].downcase
 
-          session['complete'] ||= {}
-          session['complete']['step1'] = true
+            session['complete'] ||= {}
+            session['complete']['step1'] = true
 
-          begin
-            s = Socket.getaddrinfo(@point_to,nil)
-            session['point_to'] ||= {}
-            session['point_to']['ip'] = s[0][2]
-            session['point_to']['record_value'] = @point_to
-            redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :success => 'success'}
-          rescue Exception => e
+            begin
+              s = Socket.getaddrinfo(@point_to,nil)
+              session['point_to'] ||= {}
+              session['point_to']['ip'] = s[0][2]
+              session['point_to']['record_value'] = @point_to
+              redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :success => 'success'}
+            rescue => e
+              session['complete'] ||= {}
+              session['complete']['step1'] = false
+              redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :error => e.message }
+            end
+          else
             session['complete'] ||= {}
             session['complete']['step1'] = false
-            @message = e.to_s
-            redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :error => @message }
+            redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :success => ''}
           end
-        else
-          session['complete'] ||= {}
-          session['complete']['step1'] = false
-          @message = message ? message : ''
-          redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :success => @message }
+        rescue => e
+          redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain), :flash => { :error => e.message }
         end
       end
     else
