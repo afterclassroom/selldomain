@@ -54,6 +54,9 @@ class DomainPurchasesController < ApplicationController
   end
 
   def check_domain
+    puts('==========')
+    puts(GoDaddyReseller_API[:live])
+    puts('==========')
     if params[:point_to] && params[:point_to] != ''
       @point_to = params[:point_to]
     else
