@@ -80,4 +80,22 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  GoDaddyReseller_API = {
+    live: true,
+    user_id: "502392",
+    password: "vietnam@!%DzXUlgM"
+  }
+
+  PAYPAL_API = {
+    sandbox: true,
+    username: "pesomebeta-facilitator_api1.gmail.com",
+    password: "1404957560",
+    signature: "An5ns1Kso7MWUdW4ErQKJJJ4qi4-AkbPdqM1kV216sF.eg1o1Eb2wOwB"
+  }
+
+  PAYPAL_DEVELOPER_ACCOUNT = {
+    email: "pesomebeta@gmail.com",
+    password: "pesome123"
+  }
 end
