@@ -21,15 +21,16 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0',          group: :doc
-
+group :doc do
+	gem 'sdoc', '~> 0.4.0'
+end
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 group :development, :test do
-  gem 'spring'
-  gem 'rspec-rails'
-  gem 'factory_girl_rails'
-  gem 'thin'
-  gem 'capistrano', '~> 3.1.0'
+	gem 'spring'
+	gem 'rspec-rails'
+	gem 'factory_girl_rails'
+	gem 'thin'
+	gem 'capistrano', '~> 3.1.0'
 	gem 'capistrano-rails', '~> 1.1.0'
 	gem 'capistrano-bundler'
 	gem 'capistrano-rvm'
