@@ -14,7 +14,7 @@ require 'uri'
 
 class DomainPurchasesController < ApplicationController
   before_filter :prepare, :except => [:check_domain, :register_domain, :confirm_purchase, :get_state, :get_price, :paypal, :thanks, :sorry]
-  http_basic_authenticate_with :name => "gotoclassroom", :password => "vietnam2011"
+  #http_basic_authenticate_with :name => "gotoclassroom", :password => "vietnam2011"
 
   def query_poll
     #DATNT: this action should only called once per day
@@ -62,7 +62,7 @@ class DomainPurchasesController < ApplicationController
     if params[:point_to] && params[:point_to] != ''
       @point_to = params[:point_to]
     else
-      flash[:error] = "Parameter: point_to is required."
+      flash[:error] = "Parameter: point_to is required. (e.g: http://domain.gotoclassroom.com?point_to=example.gotoclassroom.com)"
     end
   end
 
@@ -105,7 +105,7 @@ class DomainPurchasesController < ApplicationController
         end
       end
     else
-      redirect_to check_domain_domain_purchases_path(), :flash => { :error => "Parameter: point_to is required." }
+      redirect_to check_domain_domain_purchases_path(), :flash => { :error => "Parameter: point_to is required. (e.g: http://domain.gotoclassroom.com?point_to=example.gotoclassroom.com)" }
     end
   end
 

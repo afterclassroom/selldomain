@@ -1,23 +1,15 @@
-<div class="container">
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="panel panel-default" style="margin-top: 20px;">
-				<div class="panel-heading">
-					<h3 class="panel-title">Step1: New Domain Registration</h3>
-				</div>
-				<div class="panel-body" style="min-height: 250px;">
-					<%= form_tag("/domain_purchases/do_check_domain?point_to="+@point_to.to_s, method: "post", :class=>"form-inline", :id=>'frm_check_domain') do %>
+<div class="row cover" id="searchForm">
+	<div class="col-lg-12">
+		<h1 class="cover-heading">Search Domain</h1>
+		<!-- <p class="lead"></p> -->
+		<%= form_tag("/domain_purchases/do_check_domain?point_to="+@point_to.to_s, method: "post", :class=>"form-inline", :id=>'frm_check_domain') do %>
+		<div class="form-group">
+			<div class="input-group input-group-lg">
+				<div class="input-group-addon">http://</div>
+				<input class="form-control required" name="domain[name]" type="text" id="searchTextfield" placeholder="your desire domain">
 
-					<div class="form-group">
-						<label>Enter new domain:   www.</label>
-					</div>
-					<div class="form-group fg-error col-md-3">
-						<div class="">
-							<input type="text" class="form-control required" name="domain[name]">
-						</div>
-					</div>
-					<div class="form-group">
-						<select class="form-control" name="domain[type]">
+				<div class="input-group-btn">
+						<select class="form-control" name="domain[type]" style="height:46px;">
 							<option value="COM">.COM</option>
 							<option value="NET">.NET</option>
 							<option value="ORG">.ORG</option>
@@ -51,58 +43,56 @@
 							<option value="NOM.CO">.NOM.CO</option>
 						</select>
 					</div>
-					<input type="hidden" name="point_to" value="<%= @point_to.to_s%>">
-					<button type="submit" class="btn btn-success" <%= "disabled" if flash[:error].present? && flash[:error]== "Parameter: point_to is required." %>>Check Domain</button>
-					<%end%>
-
-					<br><br>
-					<% if flash[:error].present? %>
-					<div class="row domain-registered" style="padding:30px;">
-						<p><%= flash[:error] %></p>
-					</div>
-					<%else%>
-						<% if flash[:success] == "success" %>
-							<div class="row domain-available" style="padding:30px;">
-								<p>Congratulation! <a href="/domain_purchases/register_domain">www.<%= params[:sdomain]%></a> is available</p>
-								<a href="/domain_purchases/register_domain" class="btn btn-success">Register This Domain Now!</a>
-							</div>
-						<%else%>
-							<% if flash[:success] == "" %>
-								<div class="row domain-registered" style="padding:30px;">
-									<p>Sorry my dear! <a href="">www.<%= params[:sdomain]%></a> is no longer available, <a href="">search again</a></p>
-								</div>
-							<%end%>
-						<%end%>
-					<% end %>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
+			<input type="hidden" name="point_to" value="<%= @point_to.to_s%>">
+			<button type="submit" class="btn btn-lg btn-info" <%= "disabled" if flash[:error].present? && flash[:error]== "Parameter: point_to is required." %>>GO</button>
+			<%end%>
 
-<style>
-label.error{
-	color: red;
-}
-.fg-error{
-	position: relative;
-	margin-bottom: 30px;
-}
-.fg-error label.error{
-	position: absolute;
-	bottom: -28px;
-	left: 0;
-}
-.fg-error.col-md-3{
-	padding: 0;
-	float: none;
-}
-</style>
-<script>
-$(function(){
+			<% if flash[:error].present? %>
+			<div class="alert alert-danger" role="alert">
+				<strong>Sorry!</strong> <%= flash[:error] %>
+			</div>
+			<%else%>
+			<% if flash[:success] == "success" %>
+			<div class="alert alert-success" role="alert">
+				<strong>Congratulation! </strong> <a href="/domain_purchases/register_domain">http://<%= params[:sdomain]%></a> is available <span class="pull-right"><a class="btn btn-primary" href="/domain_purchases/register_domain"><i class="glyphicon glyphicon-chevron-right"></i> Register this domain</a></span>
+			</div>
+			<%else%>
+			<% if flash[:success] == "" %>
+			<div class="alert alert-danger" role="alert">
+				<strong>Sorry my dear!</strong> <a href="">http://<%= params[:sdomain]%></a> is no longer available, <a href="">search again</a>
+			</div>
+			<%end%>
+			<%end%>
+			<% end %>
 
-	$('#frm_check_domain').validate_popover({ popoverPosition: 'top' });
-	$('#frm_check_domain').validate();
+      </div>
+  </div>
 
-});
-</script>
+  <div id="features" class="row">
+  	<div class="col-lg-4">
+  		<img src="../assets/search_1.png" alt="Generic placeholder image">
+  		<h3>Find your desire domain</h3>
+  		<p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
+  	</div>
+  	<div class="col-lg-4">
+  		<img src="../assets/search_2.png" alt="Generic placeholder image">
+  		<h3>Auto map with your portfolio</h3>
+  		<p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+  	</div>
+  	<div class="col-lg-4">
+  		<img src="../assets/search_3.png" alt="Generic placeholder image">
+  		<h3>Enjoy the awesome</h3>
+  		<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+  	</div>
+  </div>
+
+  <script>
+  $(function(){
+
+  	$('#frm_check_domain').validate_popover({ popoverPosition: 'top' });
+  	$('#frm_check_domain').validate();
+
+  });
+  </script>
