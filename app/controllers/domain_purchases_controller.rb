@@ -16,44 +16,6 @@ class DomainPurchasesController < ApplicationController
   before_filter :prepare, :except => [:check_domain, :register_domain, :confirm_purchase, :get_state, :get_price, :paypal, :thanks, :sorry]
   #http_basic_authenticate_with :name => "gotoclassroom", :password => "vietnam2011"
 
-  def query_poll
-    #DATNT: this action should only called once per day
-
-    polled_result = @godaddy.query_poll
-
-    polled_result["REPORT"]["ITEM"].each do |item|
-      PollResult.create(
-        orderid: item["orderid"],
-        roid: item["roid"],
-        riid: item["riid"],
-        resourceid: item["resourceid"],
-        status: item["status"],
-        timestamp: item["timestamp"]
-        )
-    end
-
-    render :text => "poll"
-  end
-
-  def purchase_privacy
-    ipoll = PollResult.last#just for testing
-    order = PurchaseOrder.last
-
-    new_priv = @godaddy.domain_name_privacy_purchase_certification_from_db(ipoll.orderid, order.user_id, order.domain,ipoll.resourceid)
-
-    render :text => "#{new_priv}"
-  end
-
-  def info_query
-    ipoll = PollResult.last#just for testing
-
-    STDERR.print("5. Domain Name Information Query:\n")
-    result = @godaddy.info_by_resource_id(ipoll.resourceid)
-    STDERR.print("++ #{result.inspect}\n\n")
-
-    render :text => result
-  end
-
   def check_domain
     if !params[:auto_redirect]
       flash[:error] = nil
@@ -128,7 +90,8 @@ class DomainPurchasesController < ApplicationController
   def register_domain
     if session['complete'] && session['complete']['step1'] == true
       @list_country = GoDaddyReseller::CountryTable::PRODUCT_COUNTRIES.keys
-      @list_state = GoDaddyReseller::CountryTable::PRODUCT_COUNTRIES[@list_country[0]]
+      #@list_state = GoDaddyReseller::CountryTable::PRODUCT_COUNTRIES[@list_country[0]]
+      @list_state = []
     else
       redirect_to :controller => 'domain_purchases', :action => 'sorry'
     end

@@ -4,7 +4,7 @@
 		<!-- <p class="lead"></p> -->
 		<%= form_tag("/domain_purchases/do_check_domain?point_to="+@point_to.to_s, method: "post", :class=>"form-inline", :id=>'frm_check_domain') do %>
 		<div class="form-group">
-			<div class="input-group input-group-lg">
+			<div class="input-group input-group-lg fg-error">
 				<div class="input-group-addon">http://</div>
 				<input class="form-control required" name="domain[name]" type="text" id="searchTextfield" placeholder="your desire domain">
 
@@ -88,6 +88,23 @@
   	</div>
   </div>
 
+<style>
+label.error{
+	color: red;
+}
+.fg-error{
+	position: relative;
+}
+.fg-error label.error{
+	position: absolute;
+	bottom: -28px;
+	left: 0;
+}
+.fg-error.col-md-3{
+	padding: 0;
+	float: none;
+}
+</style>
   <script>
   $(function(){
 
