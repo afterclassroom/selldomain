@@ -33,7 +33,7 @@ class DomainPurchasesController < ApplicationController
       @point_to = params[:point_to]
       if params[:domain] && params[:domain][:name] != ''
         domain = params[:domain][:name]+"."+params[:domain][:type]
-        domain = domain.upcase
+        domain = domain.downcase
         begin
           result = @godaddy.check_availability([domain])
 
@@ -165,7 +165,7 @@ class DomainPurchasesController < ApplicationController
               redirect_to register_domain_domain_purchases_path(), :flash => { :error => @error}
             end
           else
-            @error = 'Error: '
+            @error = '<b>Error</b>: <br />'
             if result['failure']['contact']['error'].kind_of?(Array)
               result['failure']['contact']['error'].each_with_index do |e, index|
                 @error +=  (index+1).to_s + ": "+ e['desc'] + '=> ' + e['displaystring'] +'. <br />'
@@ -321,6 +321,9 @@ class DomainPurchasesController < ApplicationController
 end
 
 def thanks
+  if session['domain']
+    @domain= (session['domain']['name']+"."+session['domain']['type']).downcase
+  end
   session['domain'] = nil
   session['point_to'] = nil
   session['complete'] = nil
@@ -330,6 +333,9 @@ def thanks
 end
 
 def sorry
+  if session['domain']
+    @domain= (session['domain']['name']+"."+session['domain']['type']).downcase
+  end
   session['domain'] = nil
   session['point_to'] = nil
   session['complete'] = nil

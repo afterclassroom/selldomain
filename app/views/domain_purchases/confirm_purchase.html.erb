@@ -1,183 +1,216 @@
-<div class="container">
+<div class="row bs-wizard" style="border-bottom:0;">
+	<div class="col-xs-3 bs-wizard-step complete">
+		<div class="text-center bs-wizard-stepnum">Step 1</div>
+		<div class="progress"><div class="progress-bar"></div></div>
+		<a href="/domain_purchases/check_domain?point_to=<%= session['point_to']['record_value']%>" class="bs-wizard-dot"></a>
+		<div class="bs-wizard-info text-center">Find available domain.</div>
+	</div>
+
+	<div class="col-xs-3 bs-wizard-step complete">
+		<div class="text-center bs-wizard-stepnum">Step 2</div>
+		<div class="progress"><div class="progress-bar"></div></div>
+		<a href="/domain_purchases/register_domain" class="bs-wizard-dot"></a>
+		<div class="bs-wizard-info text-center">Register your domain.</div>
+	</div>
+
+	<div class="col-xs-3 bs-wizard-step disabled"><!-- complete -->
+		<div class="text-center bs-wizard-stepnum">Step 3</div>
+		<div class="progress"><div class="progress-bar"></div></div>
+		<a href="#" class="bs-wizard-dot"></a>
+		<div class="bs-wizard-info text-center">Confirm your information.</div>
+	</div>
+
+	<div class="col-xs-3 bs-wizard-step disabled"><!-- active -->
+		<div class="text-center bs-wizard-stepnum">Step 4</div>
+		<div class="progress"><div class="progress-bar"></div></div>
+		<a href="#" class="bs-wizard-dot"></a>
+		<div class="bs-wizard-info text-center"> Payment & Complete</div>
+	</div>
+</div>
+
+<div id="confirmForm">
+	<%= form_tag("/domain_purchases/paypal", method: "post", :class=>"transparentForm") do %>
 	<div class="row">
-		<div class="col-sm-12">
-			<div class="panel panel-default" style="margin-top: 20px;">
-				<div class="panel-heading">
-					<h3 class="panel-title">
-						Step3: Confirm Domain Purchase:
-						<% if session['domain'] %>
-						<%= (session['domain']['name']+"."+session['domain']['type']).upcase %>
-						<% end %>
-					</h3>
+		<div class="col-xs-8 col-md-8">
+			<h3>Owner Information</h3>
+			<hr class="colorgraph">
+
+			<div class="row">
+				<div class="col-xs-3 col-md-3 left">
+					First Name:
 				</div>
-				<div class="panel-body">
-					<div class="row">
-						<%= form_tag("/domain_purchases/paypal", method: "post", :class=>"form-horizontal") do %>
-						<div class="col-sm-8" style="border-right: 3px solid #eee;">
+				<div class="col-xs-9 col-md-9 right">
+					<%= session['contact_info']['fname']%>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3 col-md-3 left">
+					Last Name:
+				</div>
+				<div class="col-xs-9 col-md-9 right">
+					<%= session['contact_info']['lname']%>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3 col-md-3 left">
+					Organization:
+				</div>
+				<div class="col-xs-9 col-md-9 right">
+					Goto Classroom
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3 col-md-3 left">
+					Phone:
+				</div>
+				<div class="col-xs-9 col-md-9 right">
+					<%= session['contact_info']['phone']%>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3 col-md-3 left">
+					Fax:
+				</div>
+				<div class="col-xs-9 col-md-9 right">
+					<%= session['contact_info']['fax']%>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3 col-md-3 left">
+					Email:
+				</div>
+				<div class="col-xs-9 col-md-9 right">
+					<%= session['contact_info']['email']%>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3 col-md-3 left">
+					Address 1:
+				</div>
+				<div class="col-xs-9 col-md-9 right">
+					<%= session['contact_info']['sa1']%>
+				</div>
+			</div>
 
-							<h4>Owner Infor</h4>
-							<hr>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="col-sm-4 control-label">First Name:</label>
-										<p class="form-control-static">
-											<%= session['contact_info']['fname']%>
-										</p>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-4 control-label">Last Name:</label>
-										<p class="form-control-static">
-											<%= session['contact_info']['lname']%>
-										</p>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-4 control-label">Organization:</label>
-										<p class="form-control-static">
-											<%= session['contact_info']['org']%>
-										</p>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-4 control-label">Phone:</label>
-										<p class="form-control-static">
-											<%= session['contact_info']['phone']%>
-										</p>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-4 control-label">Fax:</label>
-										<p class="form-control-static">
-											<%= session['contact_info']['fax']%>
-										</p>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-4 control-label">Email:</label>
-										<p class="form-control-static">
-											<%= session['contact_info']['email']%>
-										</p>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="col-sm-4 control-label">Address 1:</label>
-										<p class="form-control-static">
-											<%= session['contact_info']['sa1']%>
-										</p>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-4 control-label">Address 2:</label>
-										<p class="form-control-static">
-											<%= session['contact_info']['sa2']%>
-										</p>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-4 control-label">City:</label>
-										<p class="form-control-static">
-											<%= session['contact_info']['city']%>
-										</p>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-4 control-label">State:</label>
-										<p class="form-control-static">
-											<%= session['contact_info']['sp']%>
-										</p>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-4 control-label">Country:</label>
-										<p class="form-control-static">
-											<%= session['contact_info']['cc']%>
-										</p>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-4 control-label">Postal Code:</label>
-										<p class="form-control-static">
-											<%= session['contact_info']['pc']%>
-										</p>
-									</div>
-								</div>
-							</div>
+			<div class="row">
+				<div class="col-xs-3 col-md-3 left">
+					Address 2:
+				</div>
+				<div class="col-xs-9 col-md-9 right">
+					<%= session['contact_info']['sa2']%>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3 col-md-3 left">
+					Country:
+				</div>
+				<div class="col-xs-9 col-md-9 right">
+					<%= session['contact_info']['cc']%>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3 col-md-3 left">
+					State:
+				</div>
+				<div class="col-xs-9 col-md-9 right">
+					<%= session['contact_info']['sp']%>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3 col-md-3 left">
+					City:
+				</div>
+				<div class="col-xs-9 col-md-9 right">
+					<%= session['contact_info']['city']%>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3 col-md-3 left">
+					Postal Code:
+				</div>
+				<div class="col-xs-9 col-md-9 right">
+					<%= session['contact_info']['pc']%>
+				</div>
+			</div>
 
-							<br><br>
-							<div class="row">
-								<div class="col-md-9 col-md-offset-3">
-									<div class="checkbox checkbox-error">
-										<label>
-											I accept the terms of the domain registaion agreement
-										</label>
-										<input type="checkbox" name='contact.agree' checked disabled>
-									</div>
-									<br>
-									<div class="form-group">
-										<div class="col-sm-8">
-											<button class="btn btn-primary">Confirm Purchase</button>
-										</div>
-									</div>
-								</div>
-							</div>
-
+			<hr class="colorgraph">
+			<div class="row">
+				<div class="col-xs-12 col-md-6">
+				</div>
+				<div class="col-xs-12 col-md-6"><button class="btn btn-success btn-block btn-lg">Confirm & Purchase</button></div>
+			</div>
+		</div>
+		<div class="col-xs-4 col-md-4" id="summary">
+			<h3>Summary</h3>
+			<hr class="colorgraph">
+			<div class="row">
+				<div class="col-xs-4 col-sm-3 col-md-5 left">
+					Domain:
+				</div>
+				<div class="col-xs-8 col-sm-9 col-md-7 right">
+					<a href="#">
+						<% if session['domain'] %>
+						<%= (session['domain']['name']+"."+session['domain']['type']).downcase %>
+						<% end %>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4 col-sm-3 col-md-5 left">
+					Term:
+				</div>
+				<div class="col-xs-8 col-sm-9 col-md-7 right">
+					<div class="col-md-10" style="padding-left: 0px;">
+						<% if session['order_item']['term'] == '1'
+							term = 'year'
+						else
+							term = 'years'
+							end %>
+							<%= session['order_item']['term']%> <%= term%>
 						</div>
-
-						<div class="col-sm-4">
-
-							<h4>Owner Summary</h4>
-							<hr>
-							<div class="form-group">
-								<label class="col-sm-4 control-label">Domain:</label>
-								<div class="col-sm-8">
-									<p class="form-control-static">
-										<a href="">
-											<% if session['domain'] %>
-											<%= (session['domain']['name']+"."+session['domain']['type']).upcase %>
-											<% end %>
-										</a>
-									</p>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label">Term:</label>
-								<div class="col-sm-8">
-									<p class="form-control-static">
-										<% if session['order_item']['term'] == '1'
-											term = 'year'
-										else
-											term = 'years'
-											end %>
-											<%= session['order_item']['term']%> <%= term%>
-										</p>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label">Unit Price:</label>
-									<div class="col-sm-8">
-										<p class="form-control-static">$<%= session['order_item']['unit_price']%></p>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label">Sale Tax:</label>
-									<div class="col-sm-8">
-										<p class="form-control-static">$<span><%= SALE_TAX%></span></p>
-									</div>
-								</div>
-								<hr>
-								<div class="form-group">
-									<label class="col-sm-4 control-label">Total Price:</label>
-									<div class="col-sm-8">
-										<p class="form-control-static">$<%= session['order_item']['total_price']%></p>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label">Auto Renew:</label>
-									<div class="col-sm-8">
-										<p class="form-control-static"><input type="checkbox" disabled value="1" class="g-inline" <%= "checked" if session['order_item']['auto_renew'] == '1' %>></p>
-									</div>
-								</div>
-							</div>
-
-							<br><br>
-
-							<%end%>
-						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 col-sm-3 col-md-5 left">
+						Unit Price:
+					</div>
+					<div class="col-xs-8 col-sm-9 col-md-7 right">
+						$<%= session['order_item']['unit_price']%>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 col-sm-3 col-md-5 left">
+						Sale Tax:
+					</div>
+					<div class="col-xs-8 col-sm-9 col-md-7 right">
+						$<span><%= SALE_TAX%></span>
+					</div>
+				</div>
+				<hr style="width: 80%">
+				<div class="row">
+					<div class="col-xs-4 col-sm-3 col-md-5 left">
+						Total:
+					</div>
+					<div class="col-xs-8 col-sm-9 col-md-7 right">
+						$<%= session['order_item']['total_price']%>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 col-sm-3 col-md-9 left">
+						<input id="Test2" type="checkbox" name='contact[auto_renew]' disabled value="1" class='myClass2' <%= "checked" if session['order_item']['auto_renew'] == '1' %> />
+						<label for="Test2">Auto Renew</label>
 					</div>
 				</div>
 			</div>
 		</div>
+		<%end%>
 	</div>
+
+	<script>
+	$(function(){
+		$('input.myClass2').prettyCheckable({
+			color: 'red'
+		});
+	})
+
+	</script>

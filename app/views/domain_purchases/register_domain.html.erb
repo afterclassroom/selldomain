@@ -2,202 +2,187 @@
 	<div class="col-xs-3 bs-wizard-step complete">
 		<div class="text-center bs-wizard-stepnum">Step 1</div>
 		<div class="progress"><div class="progress-bar"></div></div>
-		<a href="index.html" class="bs-wizard-dot"></a>
+		<a href="/domain_purchases/check_domain?point_to=<%= session['point_to']['record_value']%>" class="bs-wizard-dot"></a>
 		<div class="bs-wizard-info text-center">Find available domain.</div>
 	</div>
 
 	<div class="col-xs-3 bs-wizard-step disabled">
 		<div class="text-center bs-wizard-stepnum">Step 2</div>
 		<div class="progress"><div class="progress-bar"></div></div>
-		<a href="register.html" class="bs-wizard-dot"></a>
+		<a href="#" class="bs-wizard-dot"></a>
 		<div class="bs-wizard-info text-center current">Register your domain.</div>
 	</div>
 
 	<div class="col-xs-3 bs-wizard-step disabled"><!-- complete -->
 		<div class="text-center bs-wizard-stepnum">Step 3</div>
 		<div class="progress"><div class="progress-bar"></div></div>
-		<a href="confirm.html" class="bs-wizard-dot"></a>
+		<a href="#" class="bs-wizard-dot"></a>
 		<div class="bs-wizard-info text-center">Confirm your information.</div>
 	</div>
 
 	<div class="col-xs-3 bs-wizard-step disabled"><!-- active -->
 		<div class="text-center bs-wizard-stepnum">Step 4</div>
 		<div class="progress"><div class="progress-bar"></div></div>
-		<a href="complete.html" class="bs-wizard-dot"></a>
+		<a href="#" class="bs-wizard-dot"></a>
 		<div class="bs-wizard-info text-center"> Payment & Complete</div>
 	</div>
 </div>
 
 <div id="registerForm">
-	<form role="form" class="transparentForm">
-		<div class="row">
-			<div class="col-xs-8 col-md-8">
-				<h3>Owner Information</h3>
-				<hr class="colorgraph">
-				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input class="form-control input-lg required" name='contact[fname]' placeholder="First Name">
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input class="form-control input-lg required" name='contact[lname]' placeholder="Last Name">
-						</div>
+	<%= form_tag("/domain_purchases/do_register_domain", method: "post", :class=>"transparentForm", :role=> 'form', :id=>'frm_register_domain') do %>
+	<div class="row">
+		<div class="col-xs-8 col-md-8">
+			<h3>Owner Information</h3>
+			<hr class="colorgraph">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<input class="form-control input-lg required" name='contact[fname]' placeholder="First Name">
 					</div>
 				</div>
-				<div class="form-group">
-					<input class="form-control input-lg" name='contact[org]' placeholder="Organization">
-				</div>
-				<div class="form-group">
-					<input class="form-control input-lg required" name='contact[phone]' placeholder="Phone">
-				</div>
-				<div class="form-group">
-					<input class="form-control input-lg" name='contact[fax]' placeholder="Fax">
-				</div>
-				<div class="form-group">
-					<input type="email" class="form-control input-lg required email" name='contact[email]' placeholder="Email Address">
-				</div>
-				<div class="form-group">
-					<input class="form-control input-lg required" name='contact[sa1]' placeholder="Address 1">
-				</div>
-				<div class="form-group">
-					<input class="form-control input-lg" name='contact[sa2]' placeholder="Address 2">
-				</div>
-				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<%= select_tag :contact_country, options_for_select(@list_country,0), prompt: "Select your country", :name => "contact[cc]", :class => "form-control gSelect required" %>
-						</div>
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<input class="form-control input-lg required" name='contact[lname]' placeholder="Last Name">
 					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group state-container">
-							<%= select_tag :contact_state, options_for_select(@list_state,0), prompt: "Select your state", :name => "contact[sp]", :class => "form-control gSelect required" %>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input class="form-control input-lg required" name='contact[city]' placeholder="City">
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input class="form-control input-lg required" name='contact[pc]' placeholder="Postal Code">
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="checkbox checkbox-error">
-						<input id="Test1" type="checkbox" name='contact[agree]' class='myClass required'/>
-						<label for="Test1">I agree to the <a href="#" data-toggle="modal" data-target="#t_and_c_m">Terms and Conditions</a> set out by this site, including our Cookie Use.</label>
-					</div>
-				</div>
-				<% if flash[:error].present? %>
-				<div class="row">
-					<div class="col-md-9 col-md-offset-3" style="color: red;">
-						<%= simple_format(flash[:error]) %>
-					</div>
-				</div>
-				<%end%>
-
-
-
-				<!-- <div class="row">
-					<div class="col-xs-4 col-sm-3 col-md-3">
-						<span class="button-checkbox">
-							<button type="button" class="btn btn-primary" data-toggle="button">I Agree</button>
-							<input type="checkbox" name="t_and_c" id="t_and_c" class="hidden" value="1">
-						</span>
-					</div>
-					<div class="col-xs-8 col-sm-9 col-md-9">
-						By clicking <strong class="label label-primary">Register</strong>, you agree to the <a href="#" data-toggle="modal" data-target="#t_and_c_m">Terms and Conditions</a> set out by this site, including our Cookie Use.
-					</div>
-				</div> -->
-
-				<hr class="colorgraph">
-				<div class="row">
-					<div class="col-xs-12 col-md-6">
-						<!-- <input type="submit" value="Register" class="btn btn-primary btn-block btn-lg" tabindex="7"> -->
-					</div>
-					<div class="col-xs-12 col-md-6"><a href="confirm.html" class="btn btn-success btn-block btn-lg">Continue</a></div>
 				</div>
 			</div>
-			<div class="col-xs-4 col-md-4" id="summary">
-				<h3>Summary</h3>
-				<hr class="colorgraph">
-				<div class="row">
-					<div class="col-xs-4 col-sm-3 col-md-5 left">
-						Domain:
-					</div>
-					<div class="col-xs-8 col-sm-9 col-md-7 right">
-						example.com
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-4 col-sm-3 col-md-5 left">
-						Term:
-					</div>
-					<div class="col-xs-8 col-sm-9 col-md-7 right">
-						<div class="col-md-10" style="padding-left: 0px;">
-							<select class="form-control">
-								<option>1 year</option>
-								<option>2 years</option>
-								<option>3 years</option>
-								<option>4 years</option>
-								<option>5 years</option>
-							</select>
-						</div>
+			<div class="form-group">
+				<input class="form-control input-lg" name='contact[org]' placeholder="Organization">
+			</div>
+			<div class="form-group">
+				<input class="form-control input-lg required" name='contact[phone]' placeholder="Phone">
+			</div>
+			<div class="form-group">
+				<input class="form-control input-lg" name='contact[fax]' placeholder="Fax">
+			</div>
+			<div class="form-group">
+				<input type="email" class="form-control input-lg required email" name='contact[email]' placeholder="Email Address">
+			</div>
+			<div class="form-group">
+				<input class="form-control input-lg required" name='contact[sa1]' placeholder="Address 1">
+			</div>
+			<div class="form-group">
+				<input class="form-control input-lg" name='contact[sa2]' placeholder="Address 2">
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<%= select_tag :contact_country, options_for_select(@list_country,0), prompt: "Select your country", :name => "contact[cc]", :class => "form-control gSelect required" %>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-xs-4 col-sm-3 col-md-5 left">
-						Unit Price:
-					</div>
-					<div class="col-xs-8 col-sm-9 col-md-7 right">
-						$10.00/year
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group state-container">
+						<%= select_tag :contact_state, options_for_select(@list_state,0), prompt: "Select your state", :name => "contact[sp]", :class => "form-control gSelect required" %>
 					</div>
 				</div>
-				<hr style="width: 80%">
-				<div class="row">
-					<div class="col-xs-4 col-sm-3 col-md-5 left">
-						Total:
-					</div>
-					<div class="col-xs-8 col-sm-9 col-md-7 right">
-						$10.00
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<input class="form-control input-lg required" name='contact[city]' placeholder="City">
 					</div>
 				</div>
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<input class="form-control input-lg required" name='contact[pc]' placeholder="Postal Code">
+					</div>
+				</div>
+			</div>
 
+			<div class="row">
+				<div class="checkbox checkbox-error">
+					<input id="chkAgree" type="checkbox" name='contact[agree]' class='myClass required'/>
+					<label for="chkAgree">I agree to the Terms and Conditions set out by this site, including our Cookie Use.</label>
+				</div>
+			</div>
+			<% if flash[:error].present? %>
+			<div class="row">
+				<div style="color: red; text-align: left;">
+					<%= simple_format(flash[:error]) %>
+				</div>
+			</div>
+			<%end%>
+
+			<hr class="colorgraph">
+			<div class="row">
+				<div class="col-xs-12 col-md-6">
+				</div>
+				<div class="col-xs-12 col-md-6"><button type="submit" class="btn btn-success btn-block btn-lg btn-summit" disabled="disabled">Continue</button></div>
 			</div>
 		</div>
-	</form>
+		<div class="col-xs-4 col-md-4" id="summary">
+			<h3>Summary</h3>
+			<hr class="colorgraph">
+			<div class="row">
+				<div class="col-xs-4 col-sm-3 col-md-5 left">
+					Domain:
+				</div>
+				<div class="col-xs-8 col-sm-9 col-md-7 right">
+					<a href="#">
+						<% if session['domain'] %>
+						<%= (session['domain']['name']+"."+session['domain']['type']).downcase %>
+						<% end %>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4 col-sm-3 col-md-5 left">
+					Term:
+				</div>
+				<div class="col-xs-8 col-sm-9 col-md-7 right">
+					<div class="col-md-10" style="padding-left: 0px;">
+						<select class="form-control" name='order[term]' id='domain-term'>
+							<option value="1">1 year</option>
+							<option value="2">2 years</option>
+							<option value="3">3 years</option>
+							<option value="4">4 years</option>
+							<option value="5">5 years</option>
+							<option value="6">6 years</option>
+							<option value="7">7 years</option>
+							<option value="8">8 years</option>
+							<option value="9">9 years</option>
+							<option value="10">10 years</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4 col-sm-3 col-md-5 left">
+					Unit Price:
+				</div>
+				<div class="col-xs-8 col-sm-9 col-md-7 right">
+					$<span id='unit-price'>undefined</span> <input id='input-unit-price' type="hidden" name='order[unit_price]' value="undefined">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4 col-sm-3 col-md-5 left">
+					Sale Tax:
+				</div>
+				<div class="col-xs-8 col-sm-9 col-md-7 right">
+					$<span><%= SALE_TAX%></span>
+				</div>
+			</div>
+			<hr style="width: 80%">
+			<div class="row">
+				<div class="col-xs-4 col-sm-3 col-md-5 left">
+					Total:
+				</div>
+				<div class="col-xs-8 col-sm-9 col-md-7 right">
+					$<span id='total-price'>undefined</span> <input id='input-total-price' type="hidden" name='order[total_price]' value="undefined">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4 col-sm-3 col-md-9 left">
+					<input id="chkAutoRenew" type="checkbox" class='myClass2'/>
+					<label for="chkAutoRenew">Auto Renew</label>
+				</div>
+				<input id='chk-auto-renew' type="hidden" name='order[auto_renew]' value="0">
+			</div>
+		</div>
+	</div>
+	<%end%>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title" id="myModalLabel">Terms & Conditions</h4>
-			</div>
-			<div class="modal-body">
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal">I Agree</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-</div>
+
 
 
 <style>
@@ -225,7 +210,8 @@ var top_level_domain = "<%= session['domain']['type'] %>";
 var sale_tax = "<%= SALE_TAX %>";
 
 function getPriceDomain(top_level_domain, num_years) {
-	path = '/get_price_domain'
+	path = '/get_price_domain';
+	$('.btn-summit').attr('disabled', 'disabled');
 	$.ajax({
 		type: "GET",
 		url: path,
@@ -240,6 +226,7 @@ function getPriceDomain(top_level_domain, num_years) {
 			var total_price = (parseFloat(response) + parseFloat(sale_tax)).toPrecision(4);
 			$('#total-price').html(total_price);
 			$('#input-total-price').val(total_price);
+			$('.btn-summit').removeAttr('disabled');
 		},
 		error: function() {
 		}
@@ -269,7 +256,27 @@ $(function(){
 		color: 'red'
 	});
 
-	$('#frm_register_domain').validate_popover({ popoverPosition: 'top' });
+	$('input.myClass2').prettyCheckable({
+		color: 'red'
+	});
+
+	$('#chkAgree').on('change', function(){
+		if($(this).is(':checked')){
+			$('.btn-summit').removeAttr('disabled');
+		} else {
+			$('.btn-summit').attr('disabled', 'disabled');
+		}
+	});
+
+	$('#chkAutoRenew').on('change', function(){
+		if($(this).is(':checked')){
+			$('#chk-auto-renew').val(1);
+		} else {
+			$('#chk-auto-renew').val(0);
+		}
+	});
+
+	//$('#frm_register_domain').validate_popover({ popoverPosition: 'top' });
 	$('#frm_register_domain').validate();
 
 	getPriceDomain(top_level_domain, 1);
