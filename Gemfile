@@ -42,6 +42,9 @@ gem 'uuid'
 gem 'dotenv-rails'
 gem 'paypal-express'
 
+# Provides an easy ruby DSL & interface to AWS SES
+gem 'aws-ses', '~> 0.4.4', :require => 'aws/ses'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
