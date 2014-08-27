@@ -1,13 +1,11 @@
 <p style="font-size: 13px; color: #49595f; margin: 15px 0 15px 0; font-family: Arial, sans-serif;">
-	Dear <%= @to_user.user_name%>,
+	Greetings,
 </p>
 <p style="font-size: 13px; color: #49595f; margin: 15px 0 15px 0; font-family: Arial, sans-serif;">
-	Your  account has been created on gotoClassroom. Your log in credentials are:
-
-	Email: tester22@gmail.com
-	Password: 22222222
-
-	Before you can access to your account, we require you to activate it. You can activate your account now by visiting the following url:
-
-	https://gotoClassroom.com/activate/34615ef7ddab8539646e1df8e610610a2246466d
+	Set up more information: <br>
+	- username:  <%= @params.user_id%> <br>
+	- password:  <%= @params.password%> <br>
+</p>
+<p style="font-size: 13px; color: #49595f; margin: 15px 0 15px 0; font-family: Arial, sans-serif;">
+	<a href="https://dcc.securepaynet.net/default.aspx?prog_id=502392" target="_blank">https://dcc.securepaynet.net/default.aspx?prog_id=502392</a>
 </p>

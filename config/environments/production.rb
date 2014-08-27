@@ -86,10 +86,16 @@ config.i18n.fallbacks = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = { :host => 'gotoclassroom.com' }
 
+  # GoDaddyReseller_API = {
+  #   live: true,
+  #   user_id: "502392",
+  #   password: "vietnam@!%DzXUlgM"
+  # }
+
   GoDaddyReseller_API = {
-    live: true,
-    user_id: "502392",
-    password: "vietnam@!%DzXUlgM"
+    live: false,
+    user_id: "1002104",
+    password: "12345678"
   }
 
   PAYPAL_API = {

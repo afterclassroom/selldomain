@@ -276,7 +276,7 @@ class DomainPurchasesController < ApplicationController
           result = update_dns(domain, session['point_to']['ip'], session['point_to']['record_value'])
         end
 
-        UserMailer.sendemail_information(other_custom_value).deliver
+        UserMailer.sendemail_information(purchase_order, session['contact_info']['email']).deliver
 
         redirect_to :controller => 'domain_purchases', :action => 'thanks'
       rescue => e
