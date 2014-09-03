@@ -17,7 +17,7 @@ class SubscriptionsController < ApplicationController
     description += " -amount: " + session['order_item']['total_price'] +","
     description += " -currency_code: USD."
 
-    Paypal.sandbox! if Rails.env.development?
+    Paypal.sandbox! #if Rails.env.development?
     request = Paypal::Express::Request.new(
       :username   => PAYPAL_API[:username],
       :password   => PAYPAL_API[:password],
@@ -59,7 +59,7 @@ class SubscriptionsController < ApplicationController
       )
     token = params[:token]
 
-    Paypal.sandbox! if Rails.env.development?
+    Paypal.sandbox! #if Rails.env.development?
     begin
       request = Paypal::Express::Request.new(
         :username   => PAYPAL_API[:username],
@@ -105,7 +105,7 @@ class SubscriptionsController < ApplicationController
     description += " -amount: " + session['order_item']['total_price'] +","
     description += " -currency_code: USD."
 
-    Paypal.sandbox! if Rails.env.development?
+    Paypal.sandbox! #if Rails.env.development?
     request = Paypal::Express::Request.new(
       :username   => PAYPAL_API[:username],
       :password   => PAYPAL_API[:password],
@@ -140,7 +140,7 @@ class SubscriptionsController < ApplicationController
 
     token = params[:token]
     payer_id = params[:PayerID]
-    Paypal.sandbox! if Rails.env.development?
+    Paypal.sandbox! #if Rails.env.development?
 
     begin
       request = Paypal::Express::Request.new(
@@ -181,7 +181,7 @@ class SubscriptionsController < ApplicationController
 
  def notification
   begin
-      Paypal.sandbox! if Rails.env.development?#NOTE: this is very important for development, OR ELSE, it will failed ALWAYS
+      Paypal.sandbox! #if Rails.env.development?#NOTE: this is very important for development, OR ELSE, it will failed ALWAYS
       result = Paypal::IPN.verify!(request.raw_post)
     rescue => e
       puts "bug: #{e.message}"
