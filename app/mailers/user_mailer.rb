@@ -4,7 +4,7 @@ class UserMailer < ActionMailer::Base
 
 	def sendemail_information(params, email)
 		@params = params
-		subject = "Set up more information"
+		subject = "Login information to manage your " + @params.domain + "." + @params.domain_type
 		mail(to: email, subject: subject)
 	end
 end

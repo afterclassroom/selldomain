@@ -1,11 +1,18 @@
 <p style="font-size: 13px; color: #49595f; margin: 15px 0 15px 0; font-family: Arial, sans-serif;">
 	Greetings,
 </p>
+<% domain = "http://" + @params.domain + "." + @params.domain_type  %>
 <p style="font-size: 13px; color: #49595f; margin: 15px 0 15px 0; font-family: Arial, sans-serif;">
-	Set up more information: <br>
-	- username:  <%= @params.user_id%> <br>
-	- password:  <%= @params.password%> <br>
+	Congratulation, you're now own <a href="<%= domain%>" target="_blank"><%= domain%></a>, and it's your brand.
 </p>
 <p style="font-size: 13px; color: #49595f; margin: 15px 0 15px 0; font-family: Arial, sans-serif;">
+	Part of our committment to make life easier for our users, here is a portal so you can easily manage <a href="<%= domain%>" target="_blank"><%= domain%></a>, the login credentials as the following:
+</p>
+<p style="font-size: 13px; color: #49595f; margin: 15px 0 15px 0; font-family: Arial, sans-serif;">
+	- username:  <%= @params.user_id%> <br>
+	- password:  <%= @params.password%> <br>
 	<a href="https://dcc.securepaynet.net/default.aspx?prog_id=502392" target="_blank">https://dcc.securepaynet.net/default.aspx?prog_id=502392</a>
+</p>
+<p style="font-size: 13px; color: #49595f; margin: 15px 0 15px 0; font-family: Arial, sans-serif;">
+	If you're running into difficulty, please do not hestitate to contact us at info@gotoclassroom.com to get more help.
 </p>

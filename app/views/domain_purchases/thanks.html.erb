@@ -32,19 +32,11 @@
 	<form role="form" class="transparentForm">
 		<div class="row">
 			<div class="col-xs-12 col-md-12">
-				<h3>Thank you! You're successful registered <strong><%= @domain%></strong></h3>
+				<h3>Thank you! You're successful registered <strong><a href="http://<%= @domain%>"><%= @domain%></a></strong></h3>
 				<hr class="colorgraph">
 				<p></p>
-				<p>You must check your email to get more information. Your new domain should be connect to your classroom in the next few hours. Please waiting!</p>
+				<p>Your new domain should be connect to your classroom in the next few minutes. Thank you for your patience. <a href="http://<%= @domain%>">Click here</a> to check your classroom.</p>
 				<p>&nbsp;</p>
-				<div class="row">
-					<div class="col-xs-4 col-md-4"></div>
-					<div class="col-xs-4 col-md-4">
-						<a href="/" class="btn btn-info btn-block btn-lg">Back to Dashboard</a>
-					</div>
-					<div class="col-xs-4 col-md-4">
-					</div>
-				</div>
 			</div>
 		</form>
 	</div>
