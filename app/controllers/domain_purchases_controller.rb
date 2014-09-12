@@ -47,10 +47,12 @@ class DomainPurchasesController < ApplicationController
             session['complete']['step1'] = true
 
             begin
-              s = Socket.getaddrinfo(@point_to,nil)
+              #s = Socket.getaddrinfo(@point_to,nil)
+              s = Socket.getaddrinfo('gotoclassroom.com',nil) #fix bug Name or service not known
               session['point_to'] ||= {}
               session['point_to']['ip'] = s[0][2]
-              session['point_to']['record_value'] = @point_to
+              #session['point_to']['record_value'] = @point_to
+              session['point_to']['record_value'] = 'gotoclassroom.com' #fix bug Name or service not known
               redirect_to check_domain_domain_purchases_path(:point_to => @point_to, :sdomain => @domain, :auto_redirect => true), :flash => { :success => 'success'}
             rescue => e
               session['complete'] ||= {}
