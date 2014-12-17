@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>GotoClassroom - Domain Seller</title>
+	<title>gotoClassroom - Domain Seller</title>
 	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 	<%= csrf_meta_tags %>
 </head>
 <body>
-	<div class="container">
-		<div class="row" id="header">
-			<div class="col-lg-12">
-				<div class="masthead clearfix">
-					<div class="inner">
-						<h3 class="masthead-brand"><a href="/"><img src="../assets/logo.png" alt=""></a></h3>
+	<div class="container-fluid">
+		<div class="container">
+			<div class="row" id="header">
+				<div class="col-lg-12">
+					<div class="masthead clearfix">
+						<div class="inner">
+							<h3 class="masthead-brand"><a href="/"><img src="../assets/logo.png" alt=""></a></h3>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -20,9 +22,9 @@
 
 		<%= yield %>
 
-		<div class="mastfoot">
+		<div class="container mastfoot">
 			<div class="inner">
-				<p>Copyright by <a href="http://gotoclassroom.com">GotoClassroom</a>.</p>
+				<p>Copyright by <a href="http://gotoclassroom.com">gotoClassroom</a>.</p>
 			</div>
 		</div>
 	</div>
