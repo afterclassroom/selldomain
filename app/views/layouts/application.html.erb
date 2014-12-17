@@ -7,7 +7,12 @@
 	<%= csrf_meta_tags %>
 </head>
 <body>
-	<div class="container-fluid">
+	<% if params[:action] == 'check_domain' %>
+	<% classes = 'container-fluid' %>
+	<% else %>
+	<% classes = 'container' %>
+	<% end %>
+	<div class="<%= classes%>">
 		<div class="container">
 			<div class="row" id="header">
 				<div class="col-lg-12">
